@@ -1,6 +1,6 @@
 ---
 const rates=[15,20,25,30,35,40,50];
-export function getStaticPaths(){return rates.map(rate=>({params:{slug:`${rate}-an-hour-is-how-much-a-year`},props:{rate}}))}
+export function getStaticPaths(){const rates=[15,20,25,30,35,40,50];return rates.map(rate=>({params:{slug:`${rate}-an-hour-is-how-much-a-year`},props:{rate}}))}
 const {rate}=Astro.props;
 const annual=rate*2080,monthly=annual/12,weekly=rate*40,biweekly=weekly*2;
 const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
