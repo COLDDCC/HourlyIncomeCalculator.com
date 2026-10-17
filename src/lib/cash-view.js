@@ -1,3 +1,4 @@
+import { createCashSound } from './cash-sound.js';
 import { splitCash, makeChange, cashPieces } from './cash.js';
 
 export function createCashView() {
@@ -8,6 +9,24 @@ export function createCashView() {
   const changeButton = document.querySelector('#cash-change');
   const arrangeButton = document.querySelector('#cash-arrange');
   const spreadButton = document.querySelector('#cash-spread');
+  const sound = createCashSound();
+  const soundButton = document.querySelector('#cash-sound');
+  const motionAnimations = new WeakMap();
+  const reducedMotion = () => globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  function motion(node, kind, index=0) {
+    if(reducedMotion() || !node.animate)return;
+    motionAnimations.get(node)?.cancel();
+    const deal=[{opacity:0,translate:'22px -65px',rotate:'-12deg',scale:.9},{opacity:1,translate:'-2px 5px',rotate:'2deg',scale:1.02,offset:.78},{opacity:1,translate:'0 0',rotate:'0deg',scale:1}];
+    const settle=[{translate:'0 -7px',scale:1.05},{translate:'0 3px',scale:.99,offset:.6},{translate:'0 0',scale:1}];
+    motionAnimations.set(node,node.animate(kind==='deal'?deal:settle,{duration:kind==='deal'?540:330,delay:Math.min(index,12)*28,easing:'cubic-bezier(.2,.7,.3,1)'}));
+  }
+  soundButton?.addEventListener('click',async()=>{
+    const next=soundButton.getAttribute('aria-pressed')!=='true';soundButton.disabled=true;
+    const enabled=await sound.setEnabled(next);soundButton.disabled=false;
+    soundButton.setAttribute('aria-pressed',String(enabled));soundButton.textContent=enabled?'Sound on':'Sound off';
+    soundButton.title=next&&!enabled?'Sound is unavailable in this browser':'Paper and coin sounds';
+    if(enabled)sound.play('shuffle');
+  });
   const format = value => new Intl.NumberFormat('en-US', {style:'currency',currency:'USD'}).format(value);
   let groups = [], amountKey = '', arranged = false, layer = 100, nodes = [], activeDrag = null;
   const random = seed => { const n = Math.sin(seed * 78.233 + 12.9898) * 43758.5453; return n - Math.floor(n); };
@@ -44,14 +63,15 @@ export function createCashView() {
     node.addEventListener('pointerdown',event => {
       if(event.button !== 0 || activeDrag) return;
       activeDrag = {node, id:event.pointerId, clientX:event.clientX, clientY:event.clientY, x:Number(node.dataset.x), y:Number(node.dataset.y)};
-      node.setPointerCapture(event.pointerId);node.style.zIndex=String(++layer);node.classList.add('is-dragging');
+      motionAnimations.get(node)?.cancel();node.setPointerCapture(event.pointerId);node.style.zIndex=String(++layer);node.classList.add('is-dragging');sound.play(node.dataset.coin==='true'?'coin':'paper',.65);
     });
     node.addEventListener('pointermove',event => {
       if(!activeDrag || activeDrag.node!==node || activeDrag.id!==event.pointerId)return;
       const x=activeDrag.x+event.clientX-activeDrag.clientX,y=activeDrag.y+event.clientY-activeDrag.clientY;
+      if(Math.abs(event.clientX-activeDrag.clientX)+Math.abs(event.clientY-activeDrag.clientY)>3)sound.play('drag',.55);
       place(node,Math.max(0,Math.min(board.clientWidth-node.offsetWidth,x)),Math.max(0,Math.min(board.clientHeight-node.offsetHeight,y)),0);
     });
-    const release=()=>{if(activeDrag?.node===node){activeDrag=null;node.classList.remove('is-dragging');arranged=false;arrangeButton.setAttribute('aria-pressed','false');spreadButton.setAttribute('aria-pressed','false');}};
+    const release=()=>{if(activeDrag?.node===node){activeDrag=null;node.classList.remove('is-dragging');motion(node,'drop');sound.play(node.dataset.coin==='true'?'coin':'drop',.7);arranged=false;arrangeButton.setAttribute('aria-pressed','false');spreadButton.setAttribute('aria-pressed','false');}};
     node.addEventListener('pointerup',release);node.addEventListener('pointercancel',release);node.addEventListener('lostpointercapture',release);
     node.addEventListener('keydown',event=>{
       const moves={ArrowLeft:[-10,0],ArrowRight:[10,0],ArrowUp:[0,-10],ArrowDown:[0,10]},move=moves[event.key];
@@ -71,7 +91,7 @@ export function createCashView() {
         const img=document.createElement('img');img.src='/images/usd-'+piece.asset+'.webp';img.alt='';img.draggable=false;img.decoding='async';node.append(img);
         if(piece.count>1){const band=document.createElement('span');band.className='cash-band';band.textContent='×'+piece.count.toLocaleString('en-US');node.append(band);}
         node.setAttribute('aria-label',(piece.count>1?piece.count+' × ':'')+piece.label+'; drag or use arrow keys to move');
-        node.title=piece.label+(piece.count>1?' × '+piece.count.toLocaleString('en-US'):'');draggable(node);board.append(node);
+        node.title=piece.label+(piece.count>1?' × '+piece.count.toLocaleString('en-US'):'');draggable(node);board.append(node);motion(node,'deal',index);
       }
       previous.delete(piece.key);node.style.zIndex=String(index+1);return node;
     });
@@ -81,11 +101,12 @@ export function createCashView() {
     board.classList.toggle('is-empty',nodes.length===0);
     caption.textContent=nodes.length?(nodes.some(n=>Number(n.dataset.count)>1)?'Bands show bundle quantities. Total stays exact to the cent.':'Drag your cash · Double-click the table to tidy up'):'Enter a rate to put your earnings on the table.';
     changeButton.disabled=!groups.some(g=>g.cents>1);arrangeButton.disabled=!nodes.length;spreadButton.disabled=!nodes.length;
-    layout();
+    layout();sound.play('shuffle',.7);
   }
-  arrangeButton.addEventListener('click',()=>{arranged=true;layout();});
-  spreadButton.addEventListener('click',()=>{arranged=false;layout();});
-  board.addEventListener('dblclick',event=>{event.preventDefault();arranged=true;layout();});
+  const animateLayout=()=>{layout();nodes.forEach((node,index)=>motion(node,'settle',index));sound.play('shuffle');};
+  arrangeButton.addEventListener('click',()=>{arranged=true;animateLayout();});
+  spreadButton.addEventListener('click',()=>{arranged=false;animateLayout();});
+  board.addEventListener('dblclick',event=>{event.preventDefault();arranged=true;animateLayout();});
   changeButton.addEventListener('click',()=>{groups=makeChange(groups);arranged=false;draw();caption.textContent='One piece exchanged for smaller denominations. Same total.';});
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>layout()).observe(board);
   return {update(amount){
