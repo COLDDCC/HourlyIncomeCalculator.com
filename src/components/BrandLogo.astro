@@ -1,0 +1,7 @@
+---
+const { href = '/' } = Astro.props;
+---
+<a class="logo brand-logo" href={href} aria-label="Hourly Income Calculator"><img class="brand-coin" src="/gold-coin.svg" width="36" height="36" alt=""/><span class="brand-name">hourly<span class="brand-income">income</span><span class="brand-dot">.</span></span></a>
+<style is:global>
+header a.brand-logo{display:inline-flex;align-items:center;gap:9px;color:#30270d;font:800 20px Manrope,sans-serif;letter-spacing:-1px;text-decoration:none;flex-shrink:0}header .brand-logo .brand-coin{display:block;width:36px;height:36px;filter:drop-shadow(0 2px 2px #80550035)}header .brand-logo .brand-name{color:#30270d}header .brand-logo .brand-income{color:#805500}header .brand-logo .brand-dot{color:#805500}@media(max-width:760px){header a.brand-logo{font-size:16px;gap:6px}header .brand-logo .brand-coin{width:30px;height:30px}}
+</style>
