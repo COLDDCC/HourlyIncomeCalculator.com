@@ -1,3 +1,4 @@
+import { snapshotCashTable, paintCashTable } from './cash-card.js';
 import { translator, languagePath, LANGUAGES } from './i18n.js';
 import { currencyConfig } from './cash.js';
 const lang=document.body.dataset.language||'en',t=translator(lang);
@@ -22,21 +23,27 @@ const shareUrl=()=>{const url=new URL(location.href);url.search='';url.searchPar
 const shareText=()=>t('shareText',{rate:new Intl.NumberFormat(lang,{style:'currency',currency:currency.value}).format(Number(hourly.value)||0),annual:$('#annual').textContent});
 const feedback=message=>{$('#share-feedback').textContent=message};
 $('#share-result').addEventListener('click',async()=>{const url=shareUrl();try{if(navigator.share){await navigator.share({title:t('title'),text:shareText(),url});feedback(t('shared'))}else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(shareText()+' '+url);feedback(t('copied'))}else{window.prompt(t('copy'),url);feedback(t('copied'))}}catch(e){if(e.name!=='AbortError')feedback(t('shareError'))}});
-const drawCard=()=>{
+const drawCard=async()=>{
+const snapshot=snapshotCashTable($('#cash-table'));
+const period=$('#cash-period').value,cashTotal=$('#cash-total').textContent;
 const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1500;const ctx=canvas.getContext('2d');if(!ctx)throw Error('Canvas not supported');const c=currency.value;const rate=Math.max(0,Math.min(100000000,Number(hourly.value)||0)),h=Math.max(0,Math.min(168,Number(hours.value)||0)),w=Math.max(0,Math.min(52,Number(weeks.value)||0)),a=rate*h*w;
 const money=n=>new Intl.NumberFormat(lang,{style:'currency',currency:c,maximumFractionDigits:c==='JPY'?0:2}).format(n);
 const rect=(x,y,width,height,color)=>{ctx.fillStyle=color;ctx.fillRect(x,y,width,height)};
 const round=(x,y,width,height,r,color)=>{ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,width,height,r);ctx.fill()};
-const txt=(value,x,y,size,color='#30270d',weight=700,align='left')=>{ctx.fillStyle=color;ctx.font=weight+' '+size+'px system-ui, sans-serif';while(ctx.measureText(value).width>1080-x&&size>10){size-=1;ctx.font=weight+' '+size+'px system-ui, sans-serif'}ctx.textAlign=align;ctx.fillText(value,x,y)};
-rect(0,0,1200,1500,'#f5c928');round(56,55,1088,1390,42,'#ffffff');round(56,55,1088,16,8,'#bd8900');txt('hourlyincome.',110,155,47,'#966500',800);txt(t('yourEarnings'),110,245,24,'#746020',700);txt(t('hero'),110,327,64,'#30270d',800);
-round(104,383,992,416,32,'#ffdc4b');txt(t('annualLabel'),150,460,25,'#604714',700);
-let size=93;ctx.font='800 '+size+'px system-ui, sans-serif';while(ctx.measureText(money(a)).width>890&&size>45){size-=2;ctx.font='800 '+size+'px system-ui, sans-serif'}txt(money(a),150,590,size,'#bd8900',800);
-txt(money(rate)+' '+t('perHour'),150,673,39,'#604714',600);txt(h+' '+t('hours')+' · '+w+' '+t('weeks'),150,736,27,'#746020',500);
-const cells=[[t('monthlyLabel'),money(a/12)],[t('biweeklyLabel'),money(rate*h*2)],[t('weeklyLabel'),money(rate*h)],[t('dailyLabel'),money(rate*8)]];
-cells.forEach(([label,value],i)=>{const x=112+(i%2)*515,y=900+Math.floor(i/2)*165;txt(label,x,y,23,'#746020',700);let font=45;ctx.font='800 '+font+'px system-ui, sans-serif';while(ctx.measureText(value).width>470&&font>25){font-=2;ctx.font='800 '+font+'px system-ui, sans-serif'}txt(value,x,y+68,font,'#30270d',800)});
-rect(110,1255,980,2,'#edcf68');txt(t('grossHint'),110,1323,23,'#746020',500);txt('hourlyincomecalculator.com',110,1391,29,'#604714',700);txt('✦',1040,1391,48,'#ffd700',700);
+const txt=(value,x,y,size,color='#30270d',weight=700,align='left',maxWidth=align==='right'?x-96:1104-x)=>{ctx.fillStyle=color;ctx.font=weight+' '+size+'px system-ui, sans-serif';while(ctx.measureText(value).width>maxWidth&&size>10){size-=1;ctx.font=weight+' '+size+'px system-ui, sans-serif'}ctx.textAlign=align;ctx.fillText(value,x,y)};
+const gold=ctx.createLinearGradient(0,0,1200,1500);gold.addColorStop(0,'#ffe977');gold.addColorStop(.45,'#f9d23c');gold.addColorStop(1,'#edb914');rect(0,0,1200,1500,gold);
+round(48,48,1104,1404,40,'#ffffff');
+const logo=new Image();logo.src='/gold-coin.svg';await logo.decode();ctx.drawImage(logo,96,83,48,48);txt('hourlyincome.',156,120,34,'#805500',800);txt(c,1104,125,25,'#604714',700,'right');
+txt(t(period),96,207,30,'#604714',700);txt(cashTotal,96,306,86,'#30270d',800);
+txt(money(rate)+' '+t('perHour'),96,362,29,'#604714',600);
+const tableGold=ctx.createLinearGradient(80,405,1120,990);tableGold.addColorStop(0,'#fff3a1');tableGold.addColorStop(1,'#f2c32a');round(80,405,1040,585,28,tableGold);
+await paintCashTable(ctx,snapshot,{x:100,y:425,width:1000,height:545});
+const cells=[[t('annualLabel'),money(a)],[t('monthlyLabel'),money(a/12)],[t('weeklyLabel'),money(rate*h)],[t('dailyLabel'),money(rate*8)]];
+cells.forEach(([label,value],i)=>{const x=96+(i%2)*530,y=1057+Math.floor(i/2)*118;txt(label,x,y,22,'#604714',600);txt(value,x,y+51,40,'#30270d',800,'left',478)});
+rect(96,1275,1008,2,'#edcf68');txt(h+' '+t('hours')+' · '+w+' '+t('weeks'),96,1322,23,'#604714',500);
+txt(t('grossHint'),96,1367,20,'#604714',500);txt('hourlyincomecalculator.com',96,1415,24,'#805500',700);
 return canvas};
-$('#save-image').addEventListener('click',()=>{try{const canvas=drawCard();canvas.toBlob(blob=>{if(!blob){feedback(t('imageError'));return}const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='hourly-income-'+currency.value.toLowerCase()+'.png';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);feedback(t('saved'));},'image/png')}catch(e){feedback(t('imageError'))}});
+$('#save-image').addEventListener('click',async()=>{const button=$('#save-image'),exportCurrency=currency.value;button.disabled=true;try{if(document.fonts?.ready)await document.fonts.ready;const canvas=await drawCard();canvas.toBlob(blob=>{if(!blob){feedback(t('imageError'));return}const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='hourly-income-'+exportCurrency.toLowerCase()+'.png';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);feedback(t('saved'));},'image/png')}catch(e){feedback(t('imageError'))}finally{button.disabled=false}});
 
 
 $('#language').addEventListener('change',()=>{const code=$('#language').value;if(!LANGUAGES[code])return;const url=new URL(shareUrl());url.pathname=languagePath(code);location.assign(url.toString());});
