@@ -28,8 +28,8 @@ const money=n=>new Intl.NumberFormat(lang,{style:'currency',currency:c,maximumFr
 const rect=(x,y,width,height,color)=>{ctx.fillStyle=color;ctx.fillRect(x,y,width,height)};
 const round=(x,y,width,height,r,color)=>{ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,width,height,r);ctx.fill()};
 const txt=(value,x,y,size,color='#49391c',weight=700,align='left')=>{ctx.fillStyle=color;ctx.font=weight+' '+size+'px system-ui, sans-serif';while(ctx.measureText(value).width>1080-x&&size>10){size-=1;ctx.font=weight+' '+size+'px system-ui, sans-serif'}ctx.textAlign=align;ctx.fillText(value,x,y)};
-rect(0,0,1200,1500,'#fffbea');round(56,55,1088,1390,42,'#ffffff');round(56,55,1088,16,8,'#bd8900');txt('hourlyincome.',110,155,47,'#966500',800);txt(t('yourEarnings'),110,245,24,'#978c78',700);txt(t('hero'),110,327,64,'#30291d',800);
-round(104,383,992,416,32,'#fff0a0');txt(t('annualLabel'),150,460,25,'#8d7e61',700);
+rect(0,0,1200,1500,'#f5c928');round(56,55,1088,1390,42,'#ffffff');round(56,55,1088,16,8,'#bd8900');txt('hourlyincome.',110,155,47,'#966500',800);txt(t('yourEarnings'),110,245,24,'#978c78',700);txt(t('hero'),110,327,64,'#30291d',800);
+round(104,383,992,416,32,'#ffdc4b');txt(t('annualLabel'),150,460,25,'#8d7e61',700);
 let size=93;ctx.font='800 '+size+'px system-ui, sans-serif';while(ctx.measureText(money(a)).width>890&&size>45){size-=2;ctx.font='800 '+size+'px system-ui, sans-serif'}txt(money(a),150,590,size,'#bd8900',800);
 txt(money(rate)+' '+t('perHour'),150,673,39,'#796c54',600);txt(h+' '+t('hours')+' · '+w+' '+t('weeks'),150,736,27,'#9a907e',500);
 const cells=[[t('monthlyLabel'),money(a/12)],[t('biweeklyLabel'),money(rate*h*2)],[t('weeklyLabel'),money(rate*h)],[t('dailyLabel'),money(rate*8)]];
