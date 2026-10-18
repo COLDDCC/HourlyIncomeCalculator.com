@@ -1,7 +1,12 @@
+import { translator } from './i18n.js';
+import { CURRENCY_ASSETS } from './currency-assets.js';
+import { currencyConfig, denominations } from './cash.js';
 import { createCashSound } from './cash-sound.js';
 import { splitCash, makeChange, cashPieces } from './cash.js';
 
-export function createCashView() {
+export function createCashView({lang='en'}={}) {
+  const t=translator(lang);
+  let code='USD';
   const board = document.querySelector('#cash-table');
   const total = document.querySelector('#cash-total');
   const piecesLabel = document.querySelector('#cash-pieces');
@@ -23,11 +28,11 @@ export function createCashView() {
   soundButton?.addEventListener('click',async()=>{
     const next=soundButton.getAttribute('aria-pressed')!=='true';soundButton.disabled=true;
     const enabled=await sound.setEnabled(next);soundButton.disabled=false;
-    soundButton.setAttribute('aria-pressed',String(enabled));soundButton.textContent=enabled?'Sound on':'Sound off';
-    soundButton.title=next&&!enabled?'Sound is unavailable in this browser':'Paper and coin sounds';
+    soundButton.setAttribute('aria-pressed',String(enabled));soundButton.textContent=enabled?t('soundOn'):t('soundOff');
+    soundButton.title=next&&!enabled?t('soundUnavailable'):t('soundHint');
     if(enabled)sound.play('shuffle');
   });
-  const format = value => new Intl.NumberFormat('en-US', {style:'currency',currency:'USD'}).format(value);
+  const format = value => new Intl.NumberFormat(lang, {style:'currency',currency:code,maximumFractionDigits:code==='JPY'?0:2}).format(value);
   let groups = [], amountKey = '', arranged = false, layer = 100, nodes = [], activeDrag = null;
   const random = seed => { const n = Math.sin(seed * 78.233 + 12.9898) * 43758.5453; return n - Math.floor(n); };
   const place = (node, x, y, angle) => {
@@ -39,7 +44,8 @@ export function createCashView() {
     const bills = nodes.filter(node => node.dataset.coin !== 'true');
     const coins = nodes.filter(node => node.dataset.coin === 'true');
     nodes.forEach((node,index) => {
-      const coin = node.dataset.coin === 'true', itemWidth = coin ? 39 : Math.min(158,width * .44), itemHeight = coin ? 39 : itemWidth * 3/7;
+      const coin=node.dataset.coin==='true',ratio=Number(node.dataset.ratio)||7/3,itemWidth=coin?39:Math.min(158,width*.44,(height-35)*ratio),itemHeight=coin?39:itemWidth/ratio;
+      node.style.aspectRatio=coin?'1':String(ratio);
       node.style.width = itemWidth + 'px';
       let x, y, angle;
       if (arranged) {
@@ -86,33 +92,35 @@ export function createCashView() {
       let node=previous.get(piece.key);
       if(node && Number(node.dataset.count)!==piece.count){node.remove();node=null;}
       if(!node){
-        node=document.createElement('button');node.type='button';node.className='cash-piece'+(piece.coin?' is-coin':'')+(piece.count>1?' is-bundle':'');
-        node.dataset.key=piece.key;node.dataset.count=String(piece.count);node.dataset.coin=String(piece.coin);
-        const img=document.createElement('img');img.src='/images/usd-'+piece.asset+'.webp';img.alt='';img.draggable=false;img.decoding='async';node.append(img);
+        node=document.createElement('button');node.type='button';node.className='cash-piece'+(piece.coin?' is-coin':'')+(piece.count>1?' is-bundle':'')+(piece.balance?' is-balance':'');
+        node.dataset.ratio=String(CURRENCY_ASSETS[piece.asset]?.ratio||7/3);node.dataset.key=piece.key;node.dataset.count=String(piece.count);node.dataset.coin=String(piece.coin);
+        if(piece.src){const img=document.createElement('img');img.src=piece.src;img.alt='';img.draggable=false;img.decoding='async';node.append(img);}
+        else{const label=document.createElement('span');label.className='cash-balance-label';label.textContent=piece.label;node.append(label);}
         if(piece.count>1){const band=document.createElement('span');band.className='cash-band';band.textContent='×'+piece.count.toLocaleString('en-US');node.append(band);}
-        node.setAttribute('aria-label',(piece.count>1?piece.count+' × ':'')+piece.label+'; drag or use arrow keys to move');
+        node.setAttribute('aria-label',(piece.count>1?piece.count+' × ':'')+piece.label+'; '+(piece.balance?t('balance'):t('move')));
         node.title=piece.label+(piece.count>1?' × '+piece.count.toLocaleString('en-US'):'');draggable(node);board.append(node);motion(node,'deal',index);
       }
       previous.delete(piece.key);node.style.zIndex=String(index+1);return node;
     });
     previous.forEach(node=>node.remove());
-    const notes=groups.filter(g=>!g.coin).reduce((sum,g)=>sum+g.count,0),coins=groups.filter(g=>g.coin).reduce((sum,g)=>sum+g.count,0);
-    piecesLabel.textContent=[notes?notes.toLocaleString('en-US')+' note'+(notes===1?'':'s'):'',coins?coins.toLocaleString('en-US')+' coin'+(coins===1?'':'s'):''].filter(Boolean).join(' + ')||'No cash yet';
-    board.classList.toggle('is-empty',nodes.length===0);
-    caption.textContent=nodes.length?(nodes.some(n=>Number(n.dataset.count)>1)?'Bands show bundle quantities. Total stays exact to the cent.':'Drag your cash · Double-click the table to tidy up'):'Enter a rate to put your earnings on the table.';
-    changeButton.disabled=!groups.some(g=>g.cents>1);arrangeButton.disabled=!nodes.length;spreadButton.disabled=!nodes.length;
+    const notes=groups.filter(g=>!g.coin&&!g.balance).reduce((sum,g)=>sum+g.count,0),coins=groups.filter(g=>g.coin&&!g.balance).reduce((sum,g)=>sum+g.count,0);
+    piecesLabel.textContent=[notes?t('notes',{n:notes.toLocaleString(lang)}):'',coins?t('coins',{n:coins.toLocaleString(lang)}):''].filter(Boolean).join(' + ')||(groups.some(g=>g.balance)?t('balance'):t('noCash'));
+    board.classList.toggle('is-empty',nodes.length===0);board.dataset.empty=t('empty');board.dataset.mark=code+' · '+t('tableMark');
+    caption.textContent=groups.some(g=>g.balance)?t('fraction'):nodes.length?(nodes.some(n=>Number(n.dataset.count)>1)?t('bundles'):t('cashHelp')):t('empty');
+    changeButton.disabled=!groups.some(g=>!g.balance&&denominations(code).some(d=>d.cents<g.cents));arrangeButton.disabled=!nodes.length;spreadButton.disabled=!nodes.length;
     layout();sound.play('shuffle',.7);
   }
   const animateLayout=()=>{layout();nodes.forEach((node,index)=>motion(node,'settle',index));sound.play('shuffle');};
   arrangeButton.addEventListener('click',()=>{arranged=true;animateLayout();});
   spreadButton.addEventListener('click',()=>{arranged=false;animateLayout();});
   board.addEventListener('dblclick',event=>{event.preventDefault();arranged=true;animateLayout();});
-  changeButton.addEventListener('click',()=>{groups=makeChange(groups);arranged=false;draw();caption.textContent='One piece exchanged for smaller denominations. Same total.';});
+  changeButton.addEventListener('click',()=>{groups=makeChange(groups);arranged=false;draw();caption.textContent=t('changed')+(groups.some(g=>g.balance)?' '+t('fraction'):'');});
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>layout()).observe(board);
-  return {update(amount){
-    const cents=Number.isFinite(amount)?Math.round((amount+Number.EPSILON)*100):0;
-    total.textContent=format(cents/100);
-    if(amountKey===String(cents))return;
-    amountKey=String(cents);groups=splitCash(cents/100);draw();
+  return {update(amount,currency='USD'){
+    code=currency;
+    const cents=Number.isFinite(amount)?Math.round((amount+Number.EPSILON)*currencyConfig(code).factor):0;
+    total.textContent=format(cents/currencyConfig(code).factor);
+    if(amountKey===code+':'+String(cents))return;
+    amountKey=code+':'+String(cents);groups=splitCash(cents/currencyConfig(code).factor,code);draw();
   }};
 }

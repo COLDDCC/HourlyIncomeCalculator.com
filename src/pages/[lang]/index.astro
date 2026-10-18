@@ -1,0 +1,7 @@
+---
+import CalculatorPage from '../../components/CalculatorPage.astro';
+import {LANGUAGES} from '../../lib/i18n.js';
+export function getStaticPaths(){return Object.keys(LANGUAGES).filter(lang=>lang!=='en').map(lang=>({params:{lang}}));}
+const {lang}=Astro.params;
+---
+<CalculatorPage lang={lang} />
