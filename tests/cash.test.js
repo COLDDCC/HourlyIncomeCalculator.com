@@ -36,6 +36,8 @@ test('cash table updates, makes change, arranges, drags within bounds and clears
  board.fire('dblclick');assert.equal(get('#cash-arrange').attrs['aria-pressed'],'true');
  view.update(18.37);assert(board.children.some(n=>n.dataset.coin==='true'));
  view.update(62400);assert(board.children.length<=36);assert(board.children.some(n=>Number(n.dataset.count)>1));
+ view.update(240,'CNY');assert(board.children.every(node=>node.children[0].src.includes('/cny-')));
+ view.update(240,'JPY');assert(board.children.every(node=>node.children[0].src.includes('/jpy-')));
  view.update(0);assert.equal(board.children.length,0);assert.equal(get('#cash-change').disabled,true);assert.equal(get('#cash-total').textContent,'$0.00');
  delete globalThis.document;
 });

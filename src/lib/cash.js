@@ -6,6 +6,7 @@ export const USD_DENOMINATIONS = [
   [25, '25¢', 'quarter'], [10, '10¢', 'dime'], [5, '5¢', 'nickel'], [1, '1¢', 'penny'],
 ];
 export const CURRENCIES = {
+ CNY:{factor:100,symbol:'CN¥',notes:[100,50,20,10,5,1],coins:[.5,.1]},
  USD:{factor:100,symbol:'$',notes:[100,50,20,10,5,2,1],coins:[.25,.1,.05,.01]},
  GBP:{factor:100,symbol:'£',notes:[50,20,10,5],coins:[2,1,.5,.2,.1,.05,.02,.01]},
  EUR:{factor:100,symbol:'€',notes:[200,100,50,20,10,5],coins:[2,1,.5,.2,.1,.05,.02,.01]},

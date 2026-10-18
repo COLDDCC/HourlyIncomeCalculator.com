@@ -73,3 +73,16 @@ Educational on-screen illustrations. Specimen markings are retained where presen
 - **jpy-50.webp**: https://www.boj.or.jp/en/note_tfjgs/note/valid/img/coin_50f_03.jpg
 - **jpy-500.webp**: https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/500_yen_bicolor_clad_coin_reverse.jpg/250px-500_yen_bicolor_clad_coin_reverse.jpg
 - **jpy-5000.webp**: https://www.boj.or.jp/en/note_tfjgs/note/valid/img/f5000f.png
+
+## Chinese yuan (CNY)
+
+People’s Bank of China educational banknote and coin images; specimen markings preserved. Additional note images are credited to their original file pages on Chinese Wikipedia.
+
+- **cny-50.webp**: https://www.pbc.gov.cn/rmyh/2019rmb/img/money-50.jpg
+- **cny-1.webp**: https://www.pbc.gov.cn/rmyh/2019rmb/img/money-1.jpg
+- **cny-10.webp**: https://www.pbc.gov.cn/rmyh/2019rmb/img/money-10.jpg
+- **cny-20.webp**: https://www.pbc.gov.cn/rmyh/2019rmb/img/money-20.jpg
+- **cny-100.webp**: https://thumb.wikimedia.org/wikipedia/zh/thumb/5/51/100-2015-b.jpg/330px-100-2015-b.jpg
+- **cny-5.webp**: https://upload.wikimedia.org/wikipedia/zh/9/90/5-2020o.jpg
+- **cny-0.5.webp**: https://www.pbc.gov.cn/rmyh/2019rmb/img/yingbi_wujiao.png
+- **cny-0.1.webp**: https://www.pbc.gov.cn/rmyh/2019rmb/img/yingbi_yijiao.png

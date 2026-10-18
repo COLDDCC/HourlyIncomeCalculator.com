@@ -21,6 +21,7 @@ test('every language has a complete dictionary and localized static SEO metadata
   assert.deepEqual(Object.keys(MESSAGES[lang]),Object.keys(MESSAGES.en));assert(Object.values(MESSAGES[lang]).every(Boolean));
   const html=fs.readFileSync('dist'+languagePath(lang)+'index.html','utf8');const t=translator(lang);
   assert(html.includes('<title>'+t('title')+'</title>'));assert(html.includes('lang="'+(lang==='zh'?'zh-Hans':lang)+'"'));assert(html.includes('href="https://hourlyincomecalculator.com'+languagePath(lang)+'"'));
+  if(lang==='zh')assert(html.includes('value="CNY" selected'));
   assert(html.includes(t('soundOff')));assert(html.includes(t('change')));assert(!html.includes('id="currency-summary"'));
   assert.equal((html.match(/rel="alternate"/g)||[]).length,7);
  }
