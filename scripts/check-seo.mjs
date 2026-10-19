@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 const rates=[15,20,25,30,35,40,50,75,100];
-const paths=['/', '/salary-to-hourly-calculator/',...rates.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`)];
+const paths=['/average-hourly-wage-by-country/', '/zh/average-hourly-wage-by-country/', '/zh/', '/ja/', '/de/', '/fr/', '/es/', '/', '/salary-to-hourly-calculator/',...rates.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`)];
 const sitemap=readFileSync('dist/sitemap.xml','utf8');
 let failures=0;
 for(const path of paths){

@@ -17,3 +17,5 @@ jobs:
         run: npm run build
       - name: Verify generated SEO pages
         run: node scripts/check-seo.mjs
+      - name: Verify calculator and wage data
+        run: node --test tests/*.test.js

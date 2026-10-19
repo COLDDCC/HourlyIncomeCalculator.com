@@ -1,0 +1,232 @@
+{
+  "title": "2025 average-worker annual wages: hourly equivalents",
+  "checked_date": "2026-10-18",
+  "publication": "OECD Taxing Wages 2026",
+  "definition": "Derived standardized gross hourly equivalents, not observed hourly wages; PPP dollars are not market-exchange-rate USD.",
+  "scope": "Nine selected countries; not a world ranking. China excluded from comparable OECD ranking.",
+  "method": "Annual wage / (40 hours per week * 52 paid weeks)",
+  "china": {
+    "year": 2025,
+    "private_units_annual_cny": 71590,
+    "non_private_units_annual_cny": 129441,
+    "source": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "rank": null
+  },
+  "rows": [
+    {
+      "rank_within_selection": 1,
+      "country": "Switzerland",
+      "iso": "CH",
+      "currency": "CHF",
+      "data_year": 2025,
+      "annual_gross_local": 100715,
+      "annual_gross_usd_ppp": 106532,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 48.420673,
+      "hourly_equivalent_usd_ppp": 51.217308,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    },
+    {
+      "rank_within_selection": 2,
+      "country": "Germany",
+      "iso": "DE",
+      "currency": "EUR",
+      "data_year": 2025,
+      "annual_gross_local": 66700,
+      "annual_gross_usd_ppp": 93985,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 32.067308,
+      "hourly_equivalent_usd_ppp": 45.185096,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    },
+    {
+      "rank_within_selection": 3,
+      "country": "United Kingdom",
+      "iso": "GB",
+      "currency": "GBP",
+      "data_year": 2025,
+      "annual_gross_local": 55983,
+      "annual_gross_usd_ppp": 82329,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 26.914904,
+      "hourly_equivalent_usd_ppp": 39.58125,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    },
+    {
+      "rank_within_selection": 4,
+      "country": "Canada",
+      "iso": "CA",
+      "currency": "CAD",
+      "data_year": 2025,
+      "annual_gross_local": 92401,
+      "annual_gross_usd_ppp": 81745,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 44.423558,
+      "hourly_equivalent_usd_ppp": 39.300481,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    },
+    {
+      "rank_within_selection": 5,
+      "country": "Australia",
+      "iso": "AU",
+      "currency": "AUD",
+      "data_year": 2025,
+      "annual_gross_local": 108674,
+      "annual_gross_usd_ppp": 78815,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 52.247115,
+      "hourly_equivalent_usd_ppp": 37.891827,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    },
+    {
+      "rank_within_selection": 6,
+      "country": "United States",
+      "iso": "US",
+      "currency": "USD",
+      "data_year": 2025,
+      "annual_gross_local": 73520,
+      "annual_gross_usd_ppp": 73520,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 35.346154,
+      "hourly_equivalent_usd_ppp": 35.346154,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    },
+    {
+      "rank_within_selection": 7,
+      "country": "France",
+      "iso": "FR",
+      "currency": "EUR",
+      "data_year": 2025,
+      "annual_gross_local": 45964,
+      "annual_gross_usd_ppp": 67273,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 22.098077,
+      "hourly_equivalent_usd_ppp": 32.342788,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    },
+    {
+      "rank_within_selection": 8,
+      "country": "Japan",
+      "iso": "JP",
+      "currency": "JPY",
+      "data_year": 2025,
+      "annual_gross_local": 5703038,
+      "annual_gross_usd_ppp": 59729,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 2741.845192,
+      "hourly_equivalent_usd_ppp": 28.715865,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    },
+    {
+      "rank_within_selection": 9,
+      "country": "Spain",
+      "iso": "ES",
+      "currency": "EUR",
+      "data_year": 2025,
+      "annual_gross_local": 32678,
+      "annual_gross_usd_ppp": 57517,
+      "hours_per_week": 40,
+      "paid_weeks": 52,
+      "annual_hours": 2080,
+      "hourly_equivalent_local": 15.710577,
+      "hourly_equivalent_usd_ppp": 27.652404,
+      "status": "OECD Secretariat estimate",
+      "source_url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "checked_date": "2026-10-18"
+    }
+  ],
+  "sources": [
+    {
+      "id": "oecd",
+      "name": "OECD, Taxing Wages 2026 — Overview, Tables 1.3 and 1.7",
+      "url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/overview_d93131c3.html",
+      "note": "2025 estimated gross annual average-worker wages; local currency and USD purchasing-power parity (PPP)."
+    },
+    {
+      "id": "method",
+      "name": "OECD, Taxing Wages 2026 — Methodology and limitations",
+      "url": "https://www.oecd.org/en/publications/taxing-wages-2026_3a5169ef-en/full-report/methodology-and-limitations_f25b8cbc.html",
+      "note": "Population, industry coverage and country-specific differences."
+    },
+    {
+      "id": "ilo",
+      "name": "ILOSTAT — Wages and working time: concepts and definitions",
+      "url": "https://ilostat.ilo.org/methods/concepts-and-definitions/description-wages-and-working-time-statistics/",
+      "note": "Gross earnings, hours and comparability."
+    },
+    {
+      "id": "bls",
+      "name": "US Bureau of Labor Statistics, Occupational Employment and Wages, May 2025, Table 1",
+      "url": "https://www.bls.gov/news.release/pdf/ocwage.pdf",
+      "note": "All occupations: mean USD 33.54/hour; median USD 24.51/hour."
+    },
+    {
+      "id": "ons",
+      "name": "UK Office for National Statistics, Employee earnings in the UK: 2025",
+      "url": "https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2025",
+      "note": "April 2025 full-time median hourly earnings excluding overtime: GBP 19.67."
+    },
+    {
+      "id": "abs",
+      "name": "Australian Bureau of Statistics, Employee earnings, August 2025",
+      "url": "https://www.abs.gov.au/statistics/labour/earnings-and-working-conditions/employee-earnings/aug-2025",
+      "note": "Median hourly earnings in main job: AUD 42.90."
+    },
+    {
+      "id": "mhlw",
+      "name": "Japan Ministry of Health, Labour and Welfare, Basic Survey on Wage Structure 2025, Table 11",
+      "url": "https://www.mhlw.go.jp/toukei/itiran/roudou/chingin/kouzou/z2025/dl/14.pdf",
+      "note": "Short-time workers: mean scheduled hourly wage JPY 1,518. Not an all-worker mean or minimum wage."
+    },
+    {
+      "id": "nbs",
+      "name": "National Bureau of Statistics of China, 2025 urban-unit annual average wages",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+      "note": "Urban private units CNY 71,590/year; urban non-private units CNY 129,441/year. Excludes self-employed and freelancers."
+    },
+    {
+      "id": "fso",
+      "name": "Swiss Federal Statistical Office, Swiss Earnings Structure Survey 2024",
+      "url": "https://www.geo.admin.ch/en/newnsb/CzozNgBTCJOrNyvwsItyp",
+      "note": "Full-time standardized median monthly gross wage: CHF 7,024. Reference year 2024."
+    },
+    {
+      "id": "ppp",
+      "name": "OECD — Purchasing Power Parities",
+      "url": "https://www.oecd.org/en/data/datasets/purchasing-power-parities.html",
+      "note": "Price-level-adjusted comparisons; PPP dollars are not foreign-exchange dollars."
+    }
+  ]
+}
