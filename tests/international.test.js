@@ -1,3 +1,4 @@
+import { MARKETS, languageCurrency } from '../src/lib/market.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -27,14 +28,16 @@ test('every language has a complete dictionary and localized static SEO metadata
  }
 });
 import vm from 'node:vm';
-test('shared calculations and language changes preserve inputs in all six languages',()=>{
+test('shared calculations remain exact and language changes select matching markets',()=>{
  const source=fs.readFileSync('src/lib/calculator.js','utf8').replace(/^import .*;\n/gm,'');
  for(const lang of Object.keys(LANGUAGES))for(const code of Object.keys(CURRENCIES)){
   const elements=new Map(),get=id=>{if(!elements.has(id))elements.set(id,{value:({'#hourly':'30','#hours':'40','#weeks':'52','#currency':'USD','#cash-period':'daily','#language':lang})[id]||'',textContent:'',listeners:{},addEventListener(type,fn){this.listeners[type]=fn},classList:{toggle(){}}});return elements.get(id)};
   let rendered,assigned;const params='?rate=18.37&hours=32&weeks=48&currency='+code+'&period=weekly';
-  const context={translator,languagePath,LANGUAGES,currencyConfig:code=>CURRENCIES[code],createCashView:()=>({update:(amount,currency)=>{rendered={amount,currency}}}),document:{body:{dataset:{language:lang}},querySelector:get,querySelectorAll:()=>[]},location:{search:params,href:'https://hourlyincomecalculator.com'+languagePath(lang)+params,assign:url=>{assigned=url}},URL,URLSearchParams,Intl,Math,Number,console};
+  const context={MARKETS,languageCurrency,translator,languagePath,LANGUAGES,currencyConfig:code=>CURRENCIES[code],createCashView:()=>({update:(amount,currency)=>{rendered={amount,currency}}}),document:{body:{dataset:{language:lang}},querySelector:get,querySelectorAll:()=>[]},location:{search:params,href:'https://hourlyincomecalculator.com'+languagePath(lang)+params,assign:url=>{assigned=url}},URL,URLSearchParams,Intl,Math,Number,console};
   vm.createContext(context);vm.runInContext(source,context);assert.equal(rendered.currency,code);assert.equal(rendered.amount,18.37*32);
   const target=lang==='zh'?'en':'zh';get('#language').value=target;get('#language').listeners.change();
-  const url=new URL(assigned);assert.equal(url.pathname,languagePath(target));assert.equal(url.searchParams.get('currency'),code);assert.equal(url.searchParams.get('rate'),'18.37');assert.equal(url.searchParams.get('period'),'weekly');assert.equal(url.searchParams.get('hours'),'32');
+  const url=new URL(assigned);assert.equal(url.pathname,languagePath(target));assert.equal(url.searchParams.get('currency'),languageCurrency(target));assert.equal(url.searchParams.get('rate'),languageCurrency(target)===code?'18.37':String(MARKETS[languageCurrency(target)].rate));assert.equal(url.searchParams.get('period'),'weekly');assert.equal(url.searchParams.get('hours'),'32');
+  get('#currency').value='JPY';get('#currency').listeners.input();assert.equal(get('#hourly').value,code==='JPY'?'18.37':'1500');
+  get('#hourly').value='1800';get('#currency').value='USD';get('#currency').listeners.input();get('#currency').value='JPY';get('#currency').listeners.input();assert.equal(get('#hourly').value,'1800');
  }
 });
