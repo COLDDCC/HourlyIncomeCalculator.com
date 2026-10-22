@@ -12,3 +12,22 @@ export function estimateFederalTax(gross,status='single'){
  for(const [limit,rate] of config.brackets){const portion=Math.max(0,Math.min(taxable,limit)-previous);tax+=portion*rate;previous=limit;if(taxable<=limit)break;}
  return {gross,taxable,federalTax:tax,afterFederal:gross-tax};
 }
+
+/** Employee FICA for a standard W-2 job, tax year 2026.
+ * The additional Medicare liability threshold depends on filing status,
+ * and is separate from employer withholding threshold.
+ */
+export function estimateEmployeeFica(gross,status='single'){
+ if(!FEDERAL_2026[status]||!Number.isFinite(gross)||gross<0)throw Error('Invalid FICA input');
+ const socialSecurity=Math.min(gross,184500)*0.062;
+ const medicare=gross*0.0145;
+ const threshold=status==='married_joint'?250000:status==='married_separate'?125000:200000;
+ const additionalMedicare=Math.max(0,gross-threshold)*0.009;
+ return {socialSecurity,medicare,additionalMedicare,total:socialSecurity+medicare+additionalMedicare};
+}
+/** Simplified 1.5x overtime for a covered, non-exempt hourly worker. */
+export function estimateWeeklyOvertime(rate,hours,threshold=40){
+ if(!Number.isFinite(rate)||!Number.isFinite(hours)||rate<0||hours<0||hours>168)throw Error('Invalid overtime input');
+ const regularHours=Math.min(hours,threshold),overtimeHours=Math.max(0,hours-threshold);
+ return {regularHours,overtimeHours,regularPay:rate*regularHours,overtimePay:rate*overtimeHours*1.5,weeklyGross:rate*regularHours+rate*overtimeHours*1.5};
+}
