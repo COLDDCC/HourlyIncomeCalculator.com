@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 const rates=[15,20,25,30,35,40,50,75,100];
-const paths=['/average-hourly-wage-by-country/', '/zh/average-hourly-wage-by-country/', '/zh/', '/ja/', '/de/', '/fr/', '/es/', '/', '/salary-to-hourly-calculator/',...rates.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`)];
+const paths=['/us-federal-take-home-pay-calculator/', '/average-hourly-wage-by-country/', '/zh/average-hourly-wage-by-country/', '/zh/', '/ja/', '/de/', '/fr/', '/es/', '/', '/salary-to-hourly-calculator/',...rates.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`)];
 const sitemap=readFileSync('dist/sitemap.xml','utf8');
 let failures=0;
 for(const path of paths){
@@ -11,6 +11,11 @@ for(const path of paths){
  if(!html.includes('<title>')||!html.includes('name="description"')){console.error('Missing SEO metadata:',path);failures++;}
  if(!html.includes(canonical)){console.error('Missing canonical:',path);failures++;}
  if(!sitemap.includes(canonical)){console.error('Missing sitemap entry:',path);failures++;}
+ if(['/', '/zh/', '/ja/', '/de/', '/fr/', '/es/'].includes(path)){
+  if((html.match(/<h1[ >]/g)||[]).length!==1){console.error('Expected one main heading:',path);failures++;}
+  if(html.indexOf('id="monthly"')>html.indexOf('id="cash-visual"')){console.error('Pay breakdown should precede cash artwork:',path);failures++;}
+  if(html.indexOf('class="research-link"')>html.indexOf('id="guide"')){console.error('Wage research link should precede instructions:',path);failures++;}
+ }
  if(path.includes('-an-hour-is-how-much-a-year/')){
   const rate=Number(path.split('-')[0].slice(1));
   if(!html.includes('$'+rate+' an hour')){console.error('Missing targeted wage:',path);failures++;}
