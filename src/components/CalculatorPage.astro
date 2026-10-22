@@ -95,4 +95,21 @@ header{height:58px}.hero{padding:12px 18px 18px}.hero>.eyebrow,.hero>.subtitle{d
 @media(max-width:760px){.result-panel{grid-template-columns:minmax(0,1fr) 90px}.result-header{max-width:90px}.tax-tag{font-size:8px;letter-spacing:0;padding:4px 5px;max-width:90px;text-align:center}#annual{font-size:clamp(22px,7.4vw,29px);letter-spacing:-1px}.rate,.presets{min-width:0;width:100%}.rate input{flex:1;width:0;min-width:0}.rate>span:first-child{flex-shrink:0}}
 @media(max-width:760px) and (max-height:700px){.hero h1{display:none}}
 @media(min-width:761px) and (max-height:700px){header{height:48px}.hero{padding-top:8px}.hero h1{display:none}.form-panel,.result-panel{padding:12px 20px}.cash-table{height:130px}.cash-visual figcaption,.result-panel>.hint{display:none}.under{margin-top:6px}}
+
+/* Gold & Ink design system: warm ivory grounds the existing signature gold. */
+:root{--gold:#f5c928;--ink:#30270d;--cream:#fffaf0;--paper:#fffdf7;--line:#e8d9aa}
+body{background:var(--cream);color:var(--ink)}
+header{background:var(--cream);border-bottom-color:var(--line)}
+.hero{background:radial-gradient(ellipse at 50% 36%,#fff3b8 0%,#f5c928 55%,#f0c323 100%);padding-top:44px}
+.calculator{border-color:#d8b85b;box-shadow:0 22px 65px #56420e20}
+.form-panel{background:var(--paper)}
+.result-panel{background:linear-gradient(155deg,#f8d95e,#f2c62a)}
+.guide{background:var(--cream)}
+.guide .formula{background:#fff0b9;border:1px solid var(--line)}
+.faq details{border-bottom-color:var(--line)}
+footer{border-top-color:var(--line);background:var(--cream)}
+button,select,input{transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+button:hover{transform:translateY(-1px)}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #775307;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){button,select,input{transition:none}button:hover{transform:none}}
 </style>
