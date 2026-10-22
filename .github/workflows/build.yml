@@ -15,6 +15,11 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Build Astro site
         run: npm run build
+      - name: Verify new federal tax calculator output
+        run: |
+          test -f dist/us-federal-take-home-pay-calculator/index.html
+          grep -q "Social Security" dist/us-federal-take-home-pay-calculator/index.html
+          grep -q "canonical" dist/us-federal-take-home-pay-calculator/index.html
       - name: Verify generated SEO pages
         run: node scripts/check-seo.mjs
       - name: Verify calculator and wage data
