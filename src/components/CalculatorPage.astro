@@ -136,4 +136,11 @@ header{max-width:1650px;height:auto;min-height:74px;gap:18px;padding:10px 30px}.
 @media(max-width:1000px){header{padding:9px 16px;gap:10px}.header-brand{gap:12px}.header-intro{padding-left:12px}.header-intro p{display:none}.header-brand+nav{gap:12px}}
 @media(max-width:760px){header{min-height:58px;height:auto;padding:8px 12px;gap:8px}.header-brand{gap:8px}.header-brand .logo{font-size:14px}.header-intro{padding-left:9px}.header-intro h1{font-size:11px;line-height:1.2;letter-spacing:0}.header-intro p{display:none}.language-control select{max-width:94px;font-size:11px;padding:0 6px}.hero{padding-top:6px}}
 @media(max-width:380px){.header-intro h1{font-size:10px}.header-brand .logo{font-size:12px}.language-control select{max-width:82px}}
+
+/* Centered desktop layout with side margins. */
+header{max-width:1100px;width:calc(100% - 48px);padding-left:0;padding-right:0;margin-left:auto;margin-right:auto}
+.calculator{max-width:1100px;width:100%;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+.hero{padding-left:24px;padding-right:24px}
+.research-link,.guide,footer{max-width:1100px}
+@media(max-width:760px){header{width:calc(100% - 24px)}.hero{padding-left:12px;padding-right:12px}.calculator{grid-template-columns:1fr}}
 </style>
