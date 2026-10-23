@@ -21,7 +21,7 @@ const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP �
 </head><body data-language={lang}>
 <header><div class="header-brand"><BrandLogo href={languagePath(lang)} /><div class="header-intro"><p>{t('subtitle')}</p></div></div><nav><a href="#calculator">{t('calculator')}</a><a href="#guide">{t('guide')}</a><a href="#faq">{t('faq')}</a></nav><label class="language-control"><span class="sr-only">{t('language')}</span><select id="language">{Object.entries(LANGUAGES).map(([code,name])=><option value={code} selected={code===lang}>{name}</option>)}</select></label></header>
 <main><section class="hero" id="calculator">
-<div class="calculator"><div class="form-panel"><div class="panel-top"><div></div><span class="chip">{t('free')}</span></div>
+<div class="calculator"><div class="form-panel">
 <label for="hourly">{t('rate')}</label><div class="rate"><span id="symbol">{({CNY:'¥',USD:'$',GBP:'£',EUR:'€',JPY:'¥',AUD:'A$',CAD:'C$',CHF:'CHF'})[defaultCurrency]}</span><input id="hourly" type="number" min="0" max="100000000" step=".01" value={defaultRate}/><span class="suffix">{t('perHour')}</span></div>
 <div class="presets">{MARKETS[defaultCurrency].presets.map(rate=><button type="button" data-rate={rate}>{money(rate)}</button>)}</div>
 <div class="two"><label>{t('hours')}<input id="hours" type="number" min="0" max="168" value="40"/></label><label>{t('weeks')}<input id="weeks" type="number" min="0" max="52" value="52"/></label></div>
@@ -149,4 +149,11 @@ header{min-height:54px;height:auto;padding-top:5px;padding-bottom:5px}.header-br
 @media(max-width:1000px){.header-intro p{display:block;font-size:11px}}
 @media(max-width:760px){header{min-height:48px;padding-top:4px;padding-bottom:4px}.header-intro p{display:block;font-size:10px;line-height:1.2}.hero{padding-top:2px}}
 @media(max-width:480px){.header-intro p{font-size:9px}}
+
+/* Compact above-the-fold workspace, with wide ad-ready side gutters. */
+header{max-width:900px;width:calc(100% - 40px);min-height:46px;padding-top:3px;padding-bottom:3px}
+.hero{padding:3px 20px 0}.calculator{max-width:900px;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr)}
+.form-panel,.result-panel{padding:15px 17px}.form-panel>.panel-top{display:none}.form-panel>label,.two label{margin-bottom:5px}.rate{min-height:54px}.rate input{font-size:30px}.presets{margin-top:8px;margin-bottom:12px;gap:5px}.presets button{min-height:35px}.two{gap:9px;margin-bottom:11px}.two input{min-height:43px;padding-top:7px;padding-bottom:7px}.form-panel>select{min-height:43px;padding-top:7px;padding-bottom:7px}.form-panel .hint{margin-top:6px;font-size:11px}.result-header{margin-bottom:4px}#annual{font-size:clamp(31px,3.1vw,43px);line-height:1.1}.totals{gap:6px;margin:8px 0!important;padding-top:8px}.totals>div{padding:7px 10px}.totals small{font-size:11px}.totals strong{font-size:clamp(15px,1.4vw,19px)}.cash-toolbar{margin-top:5px}.cash-heading{margin:4px 0}.cash-heading strong{font-size:24px}.cash-table{height:100px}.cash-controls{margin-top:5px}.cash-controls button{min-height:30px}.cash-visual{margin-bottom:5px}.result-panel>.hint{margin:4px 0;font-size:10px}.share-actions{margin-top:5px;gap:7px}.share-actions button{min-height:38px}.under{margin:5px auto}.research-link,.guide,footer{max-width:900px}
+@media(max-width:1000px){header{width:calc(100% - 28px)}.hero{padding-inline:14px}}
+@media(max-width:760px){header{width:calc(100% - 20px)}.hero{padding-inline:10px}.calculator{grid-template-columns:1fr}.form-panel,.result-panel{padding:13px}.cash-table{height:90px}}
 </style>
