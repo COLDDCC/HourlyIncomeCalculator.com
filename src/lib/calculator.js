@@ -28,6 +28,25 @@ const shareUrl=()=>{const url=new URL(location.href);url.search='';url.searchPar
 const shareText=()=>t('shareText',{rate:new Intl.NumberFormat(lang,{style:'currency',currency:currency.value}).format(Number(hourly.value)||0),annual:$('#annual').textContent});
 const feedback=message=>{$('#share-feedback').textContent=message};
 $('#share-result').addEventListener('click',async()=>{const url=shareUrl();try{if(navigator.share){await navigator.share({title:t('title'),text:shareText(),url});feedback(t('shared'))}else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(shareText()+' '+url);feedback(t('copied'))}else{window.prompt(t('copy'),url);feedback(t('copied'))}}catch(e){if(e.name!=='AbortError')feedback(t('shareError'))}});
+// Social share uses the current calculator inputs, not a static homepage link.
+const shareToggle=$('#share-result');
+const socialOptions=$('#social-share-options');
+shareToggle.addEventListener('click',()=>{const expanded=shareToggle.getAttribute('aria-expanded')==='true';shareToggle.setAttribute('aria-expanded',String(!expanded));socialOptions.hidden=expanded});
+const socialTargets={
+facebook:url=>'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),
+reddit:url=>'https://www.reddit.com/submit?url='+encodeURIComponent(url)+'&title='+encodeURIComponent(shareText()),
+x:url=>'https://twitter.com/intent/tweet?text='+encodeURIComponent(shareText())+'&url='+encodeURIComponent(url),
+whatsapp:url=>'https://api.whatsapp.com/send?text='+encodeURIComponent(shareText()+' '+url)
+};
+socialOptions.addEventListener('click',async event=>{
+const button=event.target.closest('[data-social]');if(!button)return;
+const platform=button.dataset.social,url=shareUrl();
+if(platform==='instagram'){
+try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(shareText()+' '+url);feedback(t('copied'))}else{window.prompt(t('copy'),shareText()+' '+url)}}catch{window.prompt(t('copy'),shareText()+' '+url)}
+window.open('https://www.instagram.com/','_blank','noopener,noreferrer');return;
+}
+const target=socialTargets[platform]?.(url);if(target)window.open(target,'_blank','noopener,noreferrer');
+});
 const drawCard=async()=>{
 const snapshot=snapshotCashTable($('#cash-table'));
 const period=$('#cash-period').value,cashTotal=$('#cash-total').textContent;
