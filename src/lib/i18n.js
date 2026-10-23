@@ -2,7 +2,7 @@ export const LANGUAGES = {"en": "English", "zh": "简体中文", "ja": "日本�
 export const MESSAGES = {
   "en": {
     "title": "Hourly Income Calculator — Hourly to Annual Salary",
-    "description": "Convert hourly pay into annual, monthly, weekly and daily gross income. See your pay as interactive cash.",
+    "description": "Free hourly income calculator: convert hourly pay to annual, monthly, weekly and daily gross income, and explore interactive cash.",
     "calculator": "Calculator",
     "guide": "How it works",
     "faq": "FAQ",
@@ -87,7 +87,7 @@ export const MESSAGES = {
   },
   "zh": {
     "title": "时薪收入计算器：时薪换算年薪、月薪与周薪",
-    "description": "把时薪换算为年薪、月薪、周薪和日薪，用可以拖动的真实钱币直观展示税前收入。",
+    "description": "免费时薪收入计算器：将时薪换算为年薪、月薪、周薪和日薪，并通过互动现金展示收入。",
     "calculator": "计算器",
     "guide": "计算方法",
     "faq": "常见问题",
@@ -172,7 +172,7 @@ export const MESSAGES = {
   },
   "ja": {
     "title": "時給計算機：時給から年収・月収・週収を計算",
-    "description": "時給から年収・月収・週収・日収を計算。動かせる紙幣や硬貨で税引前の収入を実感できます。",
+    "description": "無料の時給計算ツール。時給から年収・月収・週収・日収を計算し、現金表示で収入を確認できます。",
     "calculator": "計算機",
     "guide": "使い方",
     "faq": "よくある質問",
@@ -257,7 +257,7 @@ export const MESSAGES = {
   },
   "de": {
     "title": "Stundenlohn-Rechner: Jahres- und Monatsgehalt berechnen",
-    "description": "Stundenlohn in Jahres-, Monats-, Wochen- und Tagesbrutto umrechnen und als bewegliches Bargeld sehen.",
+    "description": "Kostenloser Stundenlohn-Rechner: Stundenlohn in Jahres-, Monats-, Wochen- und Tagesbrutto umrechnen und Geldscheine interaktiv ansehen.",
     "calculator": "Rechner",
     "guide": "So funktioniert’s",
     "faq": "Häufige Fragen",
@@ -342,7 +342,7 @@ export const MESSAGES = {
   },
   "fr": {
     "title": "Calculateur de salaire horaire : annuel et mensuel brut",
-    "description": "Convertissez votre salaire horaire en revenus bruts annuels, mensuels, hebdomadaires et journaliers, avec des billets interactifs.",
+    "description": "Calculateur de salaire horaire gratuit : convertissez votre taux horaire en revenu brut annuel, mensuel, hebdomadaire et journalier.",
     "calculator": "Calculateur",
     "guide": "Mode d’emploi",
     "faq": "Questions fréquentes",
@@ -427,7 +427,7 @@ export const MESSAGES = {
   },
   "es": {
     "title": "Calculadora de salario por hora: anual y mensual bruto",
-    "description": "Convierte tu salario por hora en ingresos brutos anuales, mensuales, semanales y diarios, con billetes interactivos.",
+    "description": "Calculadora gratuita de ingresos por hora: convierte tu salario por hora en ingresos brutos anuales, mensuales, semanales y diarios.",
     "calculator": "Calculadora",
     "guide": "Cómo funciona",
     "faq": "Preguntas frecuentes",
