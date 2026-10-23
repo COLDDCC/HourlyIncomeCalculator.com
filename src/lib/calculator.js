@@ -27,7 +27,7 @@ currency.addEventListener('input',()=>{currencyRates.set(previousCurrency,hourly
 const shareUrl=()=>{const url=new URL(location.href);url.search='';url.searchParams.set('rate',hourly.value||'0');url.searchParams.set('hours',hours.value||'0');url.searchParams.set('weeks',weeks.value||'0');url.searchParams.set('currency',currency.value);url.searchParams.set('period',$('#cash-period').value);url.hash='calculator';return url.toString()};
 const shareText=()=>t('shareText',{rate:new Intl.NumberFormat(lang,{style:'currency',currency:currency.value}).format(Number(hourly.value)||0),annual:$('#annual').textContent});
 const feedback=message=>{$('#share-feedback').textContent=message};
-$('#share-result').addEventListener('click',async()=>{const url=shareUrl();try{if(navigator.share){await navigator.share({title:t('title'),text:shareText(),url});feedback(t('shared'))}else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(shareText()+' '+url);feedback(t('copied'))}else{window.prompt(t('copy'),url);feedback(t('copied'))}}catch(e){if(e.name!=='AbortError')feedback(t('shareError'))}});
+
 // Social share uses the current calculator inputs, not a static homepage link.
 const shareToggle=$('#share-result');
 const socialOptions=$('#social-share-options');
