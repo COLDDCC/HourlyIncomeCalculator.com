@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { SALARIES, salarySlug } from '../src/lib/salary-pages.js';
 const rates=[15,20,25,30,35,40,50,75,100];
-const paths=['/us-federal-take-home-pay-calculator/', '/average-hourly-wage-by-country/', '/zh/average-hourly-wage-by-country/', '/zh/', '/ja/', '/de/', '/fr/', '/es/', '/', '/salary-to-hourly-calculator/',...rates.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`)];
+const paths=['/us-federal-take-home-pay-calculator/', '/average-hourly-wage-by-country/', '/zh/average-hourly-wage-by-country/', '/zh/', '/ja/', '/de/', '/fr/', '/es/', '/', '/salary-to-hourly-calculator/',...rates.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`),...SALARIES.map(salary=>`/${salarySlug(salary)}/`)];
 const sitemap=readFileSync('dist/sitemap.xml','utf8');
 let failures=0;
 for(const path of paths){
@@ -15,6 +16,13 @@ for(const path of paths){
   if((html.match(/<h1[ >]/g)||[]).length!==1){console.error('Expected one main heading:',path);failures++;}
   if(html.indexOf('id="monthly"')>html.indexOf('id="cash-visual"')){console.error('Pay breakdown should precede cash artwork:',path);failures++;}
   if(html.indexOf('class="research-link"')>html.indexOf('id="guide"')){console.error('Wage research link should precede instructions:',path);failures++;}
+ }
+ if(path.includes('-a-year-is-how-much-an-hour/')){
+  const salary=Number(path.split('-')[0].slice(1));
+  const label='$'+salary.toLocaleString('en-US')+' a year';
+  const hourly='$'+(salary/2080).toFixed(2);
+  if(!html.includes(label)||!html.includes(hourly)){console.error('Missing targeted salary or hourly rate:',path);failures++;}
+  if((html.match(/<h1[ >]/g)||[]).length!==1){console.error('Expected one main heading:',path);failures++;}
  }
  if(path.includes('-an-hour-is-how-much-a-year/')){
   const rate=Number(path.split('-')[0].slice(1));

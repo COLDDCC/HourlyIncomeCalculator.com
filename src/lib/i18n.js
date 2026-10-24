@@ -1,8 +1,8 @@
 export const LANGUAGES = {"en": "English", "zh": "简体中文", "ja": "日本語", "de": "Deutsch", "fr": "Français", "es": "Español"};
 export const MESSAGES = {
   "en": {
-    "title": "Hourly Income Calculator — Hourly to Annual Salary",
-    "description": "Free hourly income calculator: convert hourly pay to annual, monthly, weekly and daily gross income, and explore interactive cash.",
+    "title": "Hourly to Salary Calculator: Annual, Monthly and Weekly Pay",
+    "description": "$30 an hour is $62,400 a year at 40 hours a week. Enter any hourly wage to see annual, monthly, biweekly, weekly and daily gross pay instantly. Free, no sign-up.",
     "calculator": "Calculator",
     "guide": "How it works",
     "faq": "FAQ",
@@ -86,8 +86,8 @@ export const MESSAGES = {
     "takeHomeGuide": "2026 US federal take-home pay estimate"
   },
   "zh": {
-    "title": "时薪收入计算器：时薪换算年薪、月薪与周薪",
-    "description": "免费时薪收入计算器：将时薪换算为年薪、月薪、周薪和日薪，并通过互动现金展示收入。",
+    "title": "时薪换算年薪计算器：时薪、月薪、年薪一键换算",
+    "description": "时薪30元、每周40小时，税前年薪约62,400元、月薪5,200元。输入时薪和工时，立即算出年薪、月薪、周薪和日薪。免费、无需注册，手机即可用。",
     "calculator": "计算器",
     "guide": "计算方法",
     "faq": "常见问题",
@@ -171,8 +171,8 @@ export const MESSAGES = {
     "takeHomeGuide": "2026年美国联邦税后收入估算（英文）"
   },
   "ja": {
-    "title": "時給計算機：時給から年収・月収・週収を計算",
-    "description": "無料の時給計算ツール。時給から年収・月収・週収・日収を計算し、現金表示で収入を確認できます。",
+    "title": "時給→年収計算｜時給1,500円なら年収いくら？月収・週収も自動計算",
+    "description": "時給1,500円・週40時間なら年収312万円、月収26万円（税引前）。時給と労働時間を入れるだけで年収・月収・週収・日収をすぐ計算。無料・登録不要、スマホでも使えます。",
     "calculator": "計算機",
     "guide": "使い方",
     "faq": "よくある質問",
@@ -256,8 +256,8 @@ export const MESSAGES = {
     "takeHomeGuide": "2026年 米国の連邦税控除後の収入試算（英語）"
   },
   "de": {
-    "title": "Stundenlohn-Rechner: Jahres- und Monatsgehalt berechnen",
-    "description": "Kostenloser Stundenlohn-Rechner: Stundenlohn in Jahres-, Monats-, Wochen- und Tagesbrutto umrechnen und Geldscheine interaktiv ansehen.",
+    "title": "Stundenlohn in Monats- und Jahresgehalt umrechnen – Brutto-Rechner",
+    "description": "20 € pro Stunde bei 40 Std./Woche sind 3.467 € brutto im Monat und 41.600 € im Jahr. Stundenlohn und Wochenstunden eingeben, Ergebnis sofort sehen. Kostenlos, ohne Anmeldung.",
     "calculator": "Rechner",
     "guide": "So funktioniert’s",
     "faq": "Häufige Fragen",
@@ -341,8 +341,8 @@ export const MESSAGES = {
     "takeHomeGuide": "US-Nettoeinkommen nach Bundesabgaben 2026 (Englisch)"
   },
   "fr": {
-    "title": "Calculateur de salaire horaire : annuel et mensuel brut",
-    "description": "Calculateur de salaire horaire gratuit : convertissez votre taux horaire en revenu brut annuel, mensuel, hebdomadaire et journalier.",
+    "title": "Taux horaire en salaire mensuel et annuel : calcul brut gratuit",
+    "description": "20 € de l’heure à 35 h par semaine, c’est environ 3 033 € brut par mois et 36 400 € par an. Calculez le vôtre instantanément, gratuitement et sans inscription.",
     "calculator": "Calculateur",
     "guide": "Mode d’emploi",
     "faq": "Questions fréquentes",
@@ -426,8 +426,8 @@ export const MESSAGES = {
     "takeHomeGuide": "Estimation après prélèvements fédéraux américains 2026 (anglais)"
   },
   "es": {
-    "title": "Calculadora de salario por hora: anual y mensual bruto",
-    "description": "Calculadora gratuita de ingresos por hora: convierte tu salario por hora en ingresos brutos anuales, mensuales, semanales y diarios.",
+    "title": "Calculadora de salario por hora a anual y mensual (bruto)",
+    "description": "20 € la hora a 40 horas semanales son 41.600 € brutos al año y 3.467 € al mes. Introduce tu salario por hora y tus horas para calcularlo al instante. Gratis y sin registro.",
     "calculator": "Calculadora",
     "guide": "Cómo funciona",
     "faq": "Preguntas frecuentes",
