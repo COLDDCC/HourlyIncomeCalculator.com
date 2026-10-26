@@ -23,8 +23,9 @@ test('every language has a complete dictionary and localized static SEO metadata
   const html=fs.readFileSync('dist'+languagePath(lang)+'index.html','utf8');const t=translator(lang);
   assert(html.includes('<title>'+t('title')+'</title>'));assert(html.includes('lang="'+(lang==='zh'?'zh-Hans':lang)+'"'));assert(html.includes('href="https://hourlyincomecalculator.com'+languagePath(lang)+'"'));
   if(lang==='zh')assert(html.includes('value="CNY" selected'));
+  if(lang==='zh-Hant')assert(html.includes('value="HKD" selected'));
   assert(html.includes(t('soundOff')));assert(html.includes(t('change')));assert(!html.includes('id="currency-summary"'));
-  assert.equal((html.match(/rel="alternate"/g)||[]).length,7);
+  assert.equal((html.match(/rel="alternate"/g)||[]).length,8);
  }
 });
 import vm from 'node:vm';
@@ -36,7 +37,7 @@ test('shared calculations remain exact and language changes select matching mark
   const context={MARKETS,languageCurrency,translator,languagePath,LANGUAGES,currencyConfig:code=>CURRENCIES[code],createCashView:()=>({update:(amount,currency)=>{rendered={amount,currency}}}),document:{body:{dataset:{language:lang}},querySelector:get,querySelectorAll:()=>[]},location:{search:params,href:'https://hourlyincomecalculator.com'+languagePath(lang)+params,assign:url=>{assigned=url}},URL,URLSearchParams,Intl,Math,Number,console};
   vm.createContext(context);vm.runInContext(source,context);assert.equal(rendered.currency,code);assert.equal(rendered.amount,18.37*32);
   const target=lang==='zh'?'en':'zh';get('#language').value=target;get('#language').listeners.change();
-  const url=new URL(assigned);assert.equal(url.pathname,languagePath(target));assert.equal(url.searchParams.get('currency'),languageCurrency(target));assert.equal(url.searchParams.get('rate'),languageCurrency(target)===code?'18.37':String(MARKETS[languageCurrency(target)].rate));assert.equal(url.searchParams.get('period'),'weekly');assert.equal(url.searchParams.get('hours'),'32');
+  const url=new URL(assigned);assert.equal(url.pathname,languagePath(target));assert.equal(url.searchParams.get('currency'),code);assert.equal(url.searchParams.get('rate'),'18.37');assert.equal(url.searchParams.get('period'),'weekly');assert.equal(url.searchParams.get('hours'),'32');
   get('#currency').value='JPY';get('#currency').listeners.input();assert.equal(get('#hourly').value,code==='JPY'?'18.37':'1500');
   get('#hourly').value='1800';get('#currency').value='USD';get('#currency').listeners.input();get('#currency').value='JPY';get('#currency').listeners.input();assert.equal(get('#hourly').value,'1800');
  }
