@@ -36,8 +36,8 @@ test('shared calculations remain exact and language changes select matching mark
   let rendered,assigned;const params='?rate=18.37&hours=32&weeks=48&currency='+code+'&period=weekly';
   const context={MARKETS,languageCurrency,translator,languagePath,LANGUAGES,currencyConfig:code=>CURRENCIES[code],createCashView:()=>({update:(amount,currency)=>{rendered={amount,currency}}}),document:{body:{dataset:{language:lang}},querySelector:get,querySelectorAll:()=>[]},location:{search:params,href:'https://hourlyincomecalculator.com'+languagePath(lang)+params,assign:url=>{assigned=url}},URL,URLSearchParams,Intl,Math,Number,console};
   vm.createContext(context);vm.runInContext(source,context);assert.equal(rendered.currency,code);assert.equal(rendered.amount,18.37*32);
-  const target=lang==='zh'?'en':'zh';get('#language').value=target;get('#language').listeners.change();
-  const url=new URL(assigned);assert.equal(url.pathname,languagePath(target));assert.equal(url.searchParams.get('currency'),code);assert.equal(url.searchParams.get('rate'),'18.37');assert.equal(url.searchParams.get('period'),'weekly');assert.equal(url.searchParams.get('hours'),'32');
+  const target=lang==='zh-Hant'?'en':'zh-Hant';get('#language').value=target;get('#language').listeners.change();
+  const url=new URL(assigned);assert.equal(url.pathname,languagePath(target));assert.equal(url.searchParams.get('currency'),languageCurrency(target));assert.equal(url.searchParams.get('rate'),languageCurrency(target)===code?'18.37':String(MARKETS[languageCurrency(target)].rate));assert.equal(url.searchParams.get('period'),'weekly');assert.equal(url.searchParams.get('hours'),'32');
   get('#currency').value='JPY';get('#currency').listeners.input();assert.equal(get('#hourly').value,code==='JPY'?'18.37':'1500');
   get('#hourly').value='1800';get('#currency').value='USD';get('#currency').listeners.input();get('#currency').value='JPY';get('#currency').listeners.input();assert.equal(get('#hourly').value,'1800');
  }
