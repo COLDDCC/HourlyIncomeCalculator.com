@@ -60,7 +60,7 @@ export function cashPieces(groups, limit = 36) {
     }));
   });
 }
-,notes:[1000,500,100,50,20,10],coins:[10,5,2,1,.5,.2,.1]},
+,notes:[1000,500,100,50,20,10],coins:[5,2,1,.5,.2,.1]},
  MOP:{factor:100,symbol:'MOP,symbol:'CN¥',notes:[100,50,20,10,5,1],coins:[.5,.1]},
  USD:{factor:100,symbol:'$',notes:[100,50,20,10,5,2,1],coins:[.25,.1,.05,.01]},
  GBP:{factor:100,symbol:'£',notes:[50,20,10,5],coins:[2,1,.5,.2,.1,.05,.02,.01]},
@@ -115,7 +115,7 @@ export function cashPieces(groups, limit = 36) {
     }));
   });
 }
-,notes:[1000,500,100,50,20,10],coins:[10,5,2,1,.5,.2,.1]},
+,notes:[1000,500,100,50,20,10],coins:[5,2,1,.5,.2,.1]},
  CNY:{factor:100,symbol:'CN¥',notes:[100,50,20,10,5,1],coins:[.5,.1]},
  USD:{factor:100,symbol:'$',notes:[100,50,20,10,5,2,1],coins:[.25,.1,.05,.01]},
  GBP:{factor:100,symbol:'£',notes:[50,20,10,5],coins:[2,1,.5,.2,.1,.05,.02,.01]},
