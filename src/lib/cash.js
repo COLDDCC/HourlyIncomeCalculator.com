@@ -6,6 +6,8 @@ export const USD_DENOMINATIONS = [
   [25, '25¢', 'quarter'], [10, '10¢', 'dime'], [5, '5¢', 'nickel'], [1, '1¢', 'penny'],
 ];
 export const CURRENCIES = {
+ HKD:{factor:100,symbol:'HK$',notes:[1000,500,100,50,20,10],coins:[5,2,1,.5,.2,.1]},
+ MOP:{factor:100,symbol:'MOP$',notes:[1000,500,100,50,20,10],coins:[5,2,1,.5,.2,.1]},
  CNY:{factor:100,symbol:'CN¥',notes:[100,50,20,10,5,1],coins:[.5,.1]},
  USD:{factor:100,symbol:'$',notes:[100,50,20,10,5,2,1],coins:[.25,.1,.05,.01]},
  GBP:{factor:100,symbol:'£',notes:[50,20,10,5],coins:[2,1,.5,.2,.1,.05,.02,.01]},
@@ -19,7 +21,7 @@ export function currencyConfig(code='USD'){return CURRENCIES[code]||CURRENCIES.U
 export function denominations(code='USD'){
  const config=currencyConfig(code);
  if(code==='USD')return USD_DENOMINATIONS.map(([cents,label,asset])=>({cents,label,asset,src:'/images/usd-'+asset+'.webp',coin:cents<100,currency:code}));
- return [...config.notes,...config.coins].map(value=>({cents:Math.round(value*config.factor),label:config.symbol+value,asset:code.toLowerCase()+'-'+value,src:'/images/currencies/'+code.toLowerCase()+'-'+value+'.webp',coin:config.coins.includes(value),currency:code}));
+ return [...config.notes,...config.coins].map(value=>({cents:Math.round(value*config.factor),label:config.symbol+value,asset:code.toLowerCase()+'-'+value,src:'/images/currencies/'+code.toLowerCase()+'-'+value+(code==='HKD'||code==='MOP'?'.svg':'.webp'),coin:config.coins.includes(value),currency:code}));
 }
 function fromCounts(counts,code){
  const list=denominations(code).flatMap(denom=>{const count=counts.get(denom.cents)||0;return count?[{...denom,count}]:[];});

@@ -7,9 +7,10 @@ const t=translator(lang);
 const title=t('title'),description=t('description');
 const defaultCurrency=languageCurrency(lang);
 const defaultRate=MARKETS[defaultCurrency].rate;
-const money=n=>new Intl.NumberFormat(lang,{style:'currency',currency:defaultCurrency,maximumFractionDigits:defaultCurrency==='JPY'?0:2}).format(n);
+const locale=lang==='zh-Hant'?'zh-Hant-HK':lang;
+const money=n=>new Intl.NumberFormat(locale,{style:'currency',currency:defaultCurrency,maximumFractionDigits:defaultCurrency==='JPY'?0:2}).format(n);
 const canonical='https://hourlyincomecalculator.com'+languagePath(lang);
-const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP — Pound Sterling',EUR:'EUR — Euro',JPY:'JPY — 日本円',AUD:'AUD — Australian Dollar',CAD:'CAD — Canadian Dollar',CHF:'CHF — Swiss Franc'};
+const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP — Pound Sterling',EUR:'EUR — Euro',JPY:'JPY — 日本円',AUD:'AUD — Australian Dollar',CAD:'CAD — Canadian Dollar',CHF:'CHF — Swiss Franc',HKD:'HKD — 港幣',MOP:'MOP — 澳門幣'};
 ---
 <!doctype html><html lang={lang==='zh'?'zh-Hans':lang}><head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#f5c928"/>
@@ -22,10 +23,10 @@ const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP �
 <header><div class="header-brand"><BrandLogo href={languagePath(lang)} /><div class="header-intro"><h1 class="header-subtitle">{t('subtitle')}</h1></div></div><nav><a href="#calculator">{t('calculator')}</a><a href="#guide">{t('guide')}</a><a href="#faq">{t('faq')}</a></nav><label class="language-control"><span class="sr-only">{t('language')}</span><select id="language">{Object.entries(LANGUAGES).map(([code,name])=><option value={code} selected={code===lang}>{name}</option>)}</select></label></header>
 <main><section class="hero" id="calculator">
 <div class="calculator"><div class="form-panel">
-<label for="hourly">{t('rate')}</label><div class="rate"><span id="symbol">{({CNY:'¥',USD:'$',GBP:'£',EUR:'€',JPY:'¥',AUD:'A$',CAD:'C$',CHF:'CHF'})[defaultCurrency]}</span><input id="hourly" type="number" min="0" max="100000000" step=".01" value={defaultRate}/><span class="suffix">{t('perHour')}</span></div>
+<label for="hourly">{t('rate')}</label><div class="rate"><span id="symbol">{({CNY:'¥',USD:'$',GBP:'£',EUR:'€',JPY:'¥',AUD:'A$',CAD:'C$',CHF:'CHF',HKD:'HK$',MOP:'MOP$'})[defaultCurrency]}</span><input id="hourly" type="number" min="0" max="100000000" step=".01" value={defaultRate}/><span class="suffix">{t('perHour')}</span></div>
 <div class="presets">{MARKETS[defaultCurrency].presets.map(rate=><button type="button" data-rate={rate}>{money(rate)}</button>)}</div>
 <div class="two"><label>{t('hours')}<input id="hours" type="number" min="0" max="168" value="40"/></label><label>{t('weeks')}<input id="weeks" type="number" min="0" max="52" value="52"/></label></div>
-<label for="currency">{t('currency')}</label><select id="currency">{Object.entries(currencyNames).map(([code,name])=><option value={code} selected={code===defaultCurrency}>{code+' — '+new Intl.DisplayNames([lang],{type:'currency'}).of(code)}</option>)}</select><p class="hint">{t('currencyHint')}</p></div>
+<label for="currency">{t('currency')}</label><select id="currency">{Object.entries(currencyNames).map(([code,name])=><option value={code} selected={code===defaultCurrency}>{code+' — '+new Intl.DisplayNames([locale],{type:'currency'}).of(code)}</option>)}</select><p class="hint">{t('currencyHint')}</p></div>
 <div class="result-panel"><div class="result-header"><div class="kicker">{t('annualLabel')}</div><span class="tax-tag">{t('beforeTax')}</span></div><output id="annual">{money(defaultRate*40*52)}</output>
 <div class="totals">{[['monthly','monthlyLabel'],['biweekly','biweeklyLabel'],['weekly','weeklyLabel'],['daily','dailyLabel']].map(([id,key])=><div><small>{t(key)}</small><strong id={id}>{money(({monthly:defaultRate*40*52/12,biweekly:defaultRate*40*2,weekly:defaultRate*40,daily:defaultRate*8})[id])}</strong></div>)}</div><figure class="cash-visual" id="cash-visual"><div class="cash-toolbar"><label for="cash-period">{t('cash')}</label><select id="cash-period">{['hourly','daily','weekly','monthly','annual'].map(period=><option value={period} selected={period==='daily'}>{t(period)}</option>)}</select></div>
 <div class="cash-heading"><strong id="cash-total">{money(defaultRate*8)}</strong><span id="cash-pieces"></span><button id="cash-sound" type="button" aria-pressed="false" title={t('soundHint')}>{t('soundOff')}</button></div>

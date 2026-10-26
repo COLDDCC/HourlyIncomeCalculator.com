@@ -8,5 +8,7 @@ export const MARKETS = {
   AUD: { rate: 30, presets: [25,30,35,40,50] },
   CAD: { rate: 25, presets: [18,20,25,30,40] },
   CHF: { rate: 30, presets: [25,30,35,40,50] },
+  HKD: { rate: 80, presets: [45,60,80,100,150] },
+  MOP: { rate: 80, presets: [45,60,80,100,150] },
 };
-export const languageCurrency = lang => ({en:'USD',zh:'CNY',ja:'JPY',de:'EUR',fr:'EUR',es:'EUR'})[lang] || 'USD';
+export const languageCurrency = lang => ({en:'USD',zh:'CNY','zh-Hant':'HKD',ja:'JPY',de:'EUR',fr:'EUR',es:'EUR'})[lang] || 'USD';
