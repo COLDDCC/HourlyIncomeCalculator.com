@@ -1,9 +1,9 @@
 ---
 import BrandLogo from '../components/BrandLogo.astro';
-import { SALARIES, salarySlug } from '../lib/salary-pages.js';
+import { SALARIES, salarySlug, HOURLY_RATES } from '../lib/salary-pages.js';
 export function getStaticPaths(){return SALARIES.map(salary=>({params:{amount:String(salary)},props:{salary}}))}
 const {salary}=Astro.props;
-const rates=[15,20,25,30,35,40,50,75,100];
+const rates=HOURLY_RATES;
 const hourly=salary/2080,monthly=salary/12,biweekly=salary/26,semimonthly=salary/24,weekly=salary/52,daily=weekly/5;
 const usd0=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
 const usd2=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);

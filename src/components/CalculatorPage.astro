@@ -1,6 +1,7 @@
 ---
 import { MARKETS, languageCurrency } from '../lib/market.js';
 import BrandLogo from './BrandLogo.astro';
+import { FEATURED_RATES } from '../lib/salary-pages.js';
 import { LANGUAGES, languagePath, translator } from '../lib/i18n.js';
 const { lang = 'en' } = Astro.props;
 const t=translator(lang);
@@ -35,7 +36,7 @@ const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP �
 <aside class="research-link" aria-label={t('rankingTitle')}><div><h2>{t('rankingTitle')}</h2><p>{t('rankingDescription')}</p></div><a href={(lang==='zh'?'/zh':'')+'/average-hourly-wage-by-country/'} hreflang={lang==='zh'?'zh-Hans':'en'}>{t('rankingLink')}</a></aside>
 <section class="guide" id="guide"><h2>{t('understand')}</h2><div class="steps">{['step1','step2','step3'].map((key,index)=><article><span>{index+1}.</span><p>{t(key)}</p></article>)}</div><div class="formula"><strong>{t('formula')}</strong><p>{t('example')}</p></div></section>
 <section class="guide faq" id="faq"><h2>{t('questions')}</h2>{[1,2,3].map((n)=><details open={n===1}><summary>{t('q'+n)}</summary><p>{t('a'+n)}</p></details>)}</section>
-<section class="guide related"><h2>{t('guides')}</h2><div class="seo-links">{[15,20,25,30,35,40,50,75,100].map(rate=><a href={`/${rate}-an-hour-is-how-much-a-year/`} hreflang="en">{t('rateGuide',{rate:'$'+rate})} ↗</a>)}<a href="/salary-to-hourly-calculator/" hreflang="en">{t('reverse')} ↗</a><a href="/us-federal-take-home-pay-calculator/" hreflang="en">{t('takeHomeGuide')} ↗</a></div></section>
+<section class="guide related"><h2>{t('guides')}</h2><div class="seo-links">{FEATURED_RATES.map(rate=><a href={`/${rate}-an-hour-is-how-much-a-year/`} hreflang="en">{t('rateGuide',{rate:'$'+rate})} ↗</a>)}<a href="/salary-to-hourly-calculator/" hreflang="en">{t('reverse')} ↗</a><a href="/us-federal-take-home-pay-calculator/" hreflang="en">{t('takeHomeGuide')} ↗</a></div></section>
 </main><footer><span>© {new Date().getFullYear()} Hourly Income Calculator</span></footer>
 <script>import '../lib/calculator.js';</script>
 
