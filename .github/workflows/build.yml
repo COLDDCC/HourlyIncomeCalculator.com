@@ -24,3 +24,20 @@ jobs:
         run: node scripts/check-seo.mjs
       - name: Verify calculator and wage data
         run: node --test tests/*.test.js
+      - name: Run mobile Lighthouse audits on target hourly pages
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4321 > /tmp/astro-preview.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4321/30-an-hour-is-how-much-a-year/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npx --yes lighthouse@12 http://127.0.0.1:4321/20-an-hour-is-how-much-a-year/ --chrome-flags="--headless --no-sandbox" --preset=desktop --output=json --output-path=/tmp/lh-20.json --quiet
+          npx --yes lighthouse@12 http://127.0.0.1:4321/30-an-hour-is-how-much-a-year/ --chrome-flags="--headless --no-sandbox" --form-factor=mobile --screenEmulation.mobile=true --screenEmulation.width=375 --screenEmulation.height=812 --screenEmulation.deviceScaleFactor=1 --output=json --output-path=/tmp/lh-30-mobile.json --quiet
+          node scripts/check-lighthouse.mjs /tmp/lh-20.json /tmp/lh-30-mobile.json
+      - name: Upload Lighthouse audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hourly-lighthouse-reports
+          path: /tmp/lh-*.json
+          if-no-files-found: ignore
