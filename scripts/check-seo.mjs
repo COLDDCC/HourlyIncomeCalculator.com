@@ -37,6 +37,19 @@ for(const path of paths){
   check(html.includes('bls.gov'),'BLS source',path);
   check(html.includes('/us-federal-take-home-pay-calculator/?rate='),'tax deep link',path);
   check(desc.length>=120&&desc.length<=160,'description 120-160 chars: '+desc.length,path);
+  check(!html.includes('$'+rate+' an hour'),'no duplicated dollar signs',path);
+  check(html.includes('<h1>How much is <em>
+ }
+}
+if(failures){console.error(failures+' SEO check(s) failed');process.exit(1);}
+console.log('SEO checks passed for '+paths.length+' pages.');
++rate+' an hour</em> annually?</h1>'),'exact H1 rendering',path);
+  check(html.includes('<div class="tablewrap"><table>'),'scrollable tables',path);
+  check((html.match(/<table>/g)||[]).length>=5,'all comparison tables',path);
+  check(html.includes('overflow-x:auto'),'horizontal table scroll CSS',path);
+  check(html.includes('not include state or local income tax'),'state tax disclaimer',path);
+  check(html.includes('BreadcrumbList')&&html.includes('FAQPage'),'structured data',path);
+  check(html.includes('Compare nearby rates:'),'adjacent wage navigation',path);
  }
 }
 if(failures){console.error(failures+' SEO check(s) failed');process.exit(1);}
