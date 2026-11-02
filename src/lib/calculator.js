@@ -1,16 +1,16 @@
 import { snapshotCashTable, paintCashTable } from './cash-card.js';
 import { translator, languagePath, LANGUAGES } from './i18n.js';
 import { currencyConfig } from './cash.js';
-import { MARKETS, languageCurrency } from './market.js';
+import { MARKETS, languageCurrency, regionalCurrency, ZERO_DECIMAL } from './market.js';
 const lang=document.body.dataset.language||'en',t=translator(lang);
 import { createCashView } from './cash-view.js';
-const $=s=>document.querySelector(s);const hourly=$('#hourly'),hours=$('#hours'),weeks=$('#weeks'),currency=$('#currency');const symbols={CNY:'¥',USD:'$',GBP:'£',EUR:'€',JPY:'¥',AUD:'A$',CAD:'C$',CHF:'CHF',HKD:'HK$',MOP:'MOP$'};const buttons=[...document.querySelectorAll('[data-rate]')];
+const $=s=>document.querySelector(s);const hourly=$('#hourly'),hours=$('#hours'),weeks=$('#weeks'),currency=$('#currency');const symbols={CNY:'¥',USD:'$',GBP:'£',EUR:'€',JPY:'¥',AUD:'A$',CAD:'C$',CHF:'CHF',HKD:'HK$',MOP:'MOP$',TWD:'NT$',MXN:'MX$',BRL:'R$'};const buttons=[...document.querySelectorAll('[data-rate]')];
 const cashView=createCashView({lang});
-function update(){let rate=Math.max(0,Math.min(100000000,Number(hourly.value)||0)),h=Math.max(0,Math.min(168,Number(hours.value)||0)),w=Math.max(0,Math.min(52,Number(weeks.value)||0)),a=rate*h*w,c=currency.value;const money=n=>new Intl.NumberFormat(lang,{style:'currency',currency:c,maximumFractionDigits:c==='JPY'?0:2}).format(n);$('#annual').textContent=money(a);$('#monthly').textContent=money(a/12);$('#biweekly').textContent=money(rate*h*2);$('#weekly').textContent=money(rate*h);$('#daily').textContent=money(rate*8);$('#symbol').textContent=symbols[c];$('#hourly').step=c==='JPY'?'1':'.01';{const amounts={hourly:rate,daily:rate*8,weekly:rate*h,monthly:a/12,annual:a};cashView.update(amounts[$('#cash-period').value]??rate*8,c);}const rates=MARKETS[c].presets;buttons.forEach((b,index)=>{b.dataset.rate=String(rates[index]);b.textContent=symbols[c]+b.dataset.rate;b.classList.toggle('selected',Number(b.dataset.rate)===rate)})}buttons.forEach(b=>b.addEventListener('click',()=>{hourly.value=b.dataset.rate;update()}));[hourly,hours,weeks,$('#cash-period')].forEach(e=>e.addEventListener('input',update));update();
+function update(){let rate=Math.max(0,Math.min(100000000,Number(hourly.value)||0)),h=Math.max(0,Math.min(168,Number(hours.value)||0)),w=Math.max(0,Math.min(52,Number(weeks.value)||0)),a=rate*h*w,c=currency.value;const money=n=>new Intl.NumberFormat(lang,{style:'currency',currency:c,maximumFractionDigits:ZERO_DECIMAL.includes(c)?0:2}).format(n);$('#annual').textContent=money(a);$('#monthly').textContent=money(a/12);$('#biweekly').textContent=money(rate*h*2);$('#weekly').textContent=money(rate*h);$('#daily').textContent=money(rate*8);$('#symbol').textContent=symbols[c];$('#hourly').step=c==='JPY'?'1':'.01';{const amounts={hourly:rate,daily:rate*8,weekly:rate*h,monthly:a/12,annual:a};cashView.update(amounts[$('#cash-period').value]??rate*8,c);}const rates=MARKETS[c].presets;buttons.forEach((b,index)=>{b.dataset.rate=String(rates[index]);b.textContent=symbols[c]+b.dataset.rate;b.classList.toggle('selected',Number(b.dataset.rate)===rate)})}buttons.forEach(b=>b.addEventListener('click',()=>{hourly.value=b.dataset.rate;update()}));[hourly,hours,weeks,$('#cash-period')].forEach(e=>e.addEventListener('input',update));update();
 
 // Shareable URL parameters let friends open the calculator with the same settings.
 const params=new URLSearchParams(location.search);
-currency.value=languageCurrency(lang);
+currency.value=(typeof navigator!=='undefined'&&regionalCurrency(lang,navigator.languages||[navigator.language]))||languageCurrency(lang);
 hourly.value=String(MARKETS[currency.value].rate);
 if(['hourly','daily','weekly','monthly','annual'].includes(params.get('period')))$('#cash-period').value=params.get('period');
 const validCurrency=Object.keys(MARKETS);
@@ -51,7 +51,7 @@ const drawCard=async()=>{
 const snapshot=snapshotCashTable($('#cash-table'));
 const period=$('#cash-period').value,cashTotal=$('#cash-total').textContent;
 const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1500;const ctx=canvas.getContext('2d');if(!ctx)throw Error('Canvas not supported');const c=currency.value;const rate=Math.max(0,Math.min(100000000,Number(hourly.value)||0)),h=Math.max(0,Math.min(168,Number(hours.value)||0)),w=Math.max(0,Math.min(52,Number(weeks.value)||0)),a=rate*h*w;
-const money=n=>new Intl.NumberFormat(lang,{style:'currency',currency:c,maximumFractionDigits:c==='JPY'?0:2}).format(n);
+const money=n=>new Intl.NumberFormat(lang,{style:'currency',currency:c,maximumFractionDigits:ZERO_DECIMAL.includes(c)?0:2}).format(n);
 const rect=(x,y,width,height,color)=>{ctx.fillStyle=color;ctx.fillRect(x,y,width,height)};
 const round=(x,y,width,height,r,color)=>{ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,width,height,r);ctx.fill()};
 const txt=(value,x,y,size,color='#30270d',weight=700,align='left',maxWidth=align==='right'?x-96:1104-x)=>{ctx.fillStyle=color;ctx.font=weight+' '+size+'px system-ui, sans-serif';while(ctx.measureText(value).width>maxWidth&&size>10){size-=1;ctx.font=weight+' '+size+'px system-ui, sans-serif'}ctx.textAlign=align;ctx.fillText(value,x,y)};

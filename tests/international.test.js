@@ -1,4 +1,4 @@
-import { MARKETS, languageCurrency } from '../src/lib/market.js';
+import { MARKETS, languageCurrency, regionalCurrency, ZERO_DECIMAL } from '../src/lib/market.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -24,8 +24,9 @@ test('every language has a complete dictionary and localized static SEO metadata
   assert(html.includes('<title>'+t('title')+'</title>'));assert(html.includes('lang="'+(lang==='zh'?'zh-Hans':lang)+'"'));assert(html.includes('href="https://hourlyincomecalculator.com'+languagePath(lang)+'"'));
   if(lang==='zh')assert(html.includes('value="CNY" selected'));
   if(lang==='zh-Hant')assert(html.includes('value="HKD" selected'));
+  if(lang==='pt')assert(html.includes('value="BRL" selected'));
   assert(html.includes(t('soundOff')));assert(html.includes(t('change')));assert(!html.includes('id="currency-summary"'));
-  assert.equal((html.match(/rel="alternate"/g)||[]).length,8);
+  assert.equal((html.match(/rel="alternate"/g)||[]).length,Object.keys(LANGUAGES).length+1);
  }
 });
 import vm from 'node:vm';
@@ -34,11 +35,30 @@ test('shared calculations remain exact and language changes select matching mark
  for(const lang of Object.keys(LANGUAGES))for(const code of Object.keys(CURRENCIES)){
   const elements=new Map(),get=id=>{if(!elements.has(id))elements.set(id,{value:({'#hourly':'30','#hours':'40','#weeks':'52','#currency':'USD','#cash-period':'daily','#language':lang})[id]||'',textContent:'',listeners:{},addEventListener(type,fn){this.listeners[type]=fn},classList:{toggle(){}}});return elements.get(id)};
   let rendered,assigned;const params='?rate=18.37&hours=32&weeks=48&currency='+code+'&period=weekly';
-  const context={MARKETS,languageCurrency,translator,languagePath,LANGUAGES,currencyConfig:code=>CURRENCIES[code],createCashView:()=>({update:(amount,currency)=>{rendered={amount,currency}}}),document:{body:{dataset:{language:lang}},querySelector:get,querySelectorAll:()=>[]},location:{search:params,href:'https://hourlyincomecalculator.com'+languagePath(lang)+params,assign:url=>{assigned=url}},URL,URLSearchParams,Intl,Math,Number,console};
+  const context={MARKETS,languageCurrency,regionalCurrency,ZERO_DECIMAL,translator,languagePath,LANGUAGES,currencyConfig:code=>CURRENCIES[code],createCashView:()=>({update:(amount,currency)=>{rendered={amount,currency}}}),document:{body:{dataset:{language:lang}},querySelector:get,querySelectorAll:()=>[]},location:{search:params,href:'https://hourlyincomecalculator.com'+languagePath(lang)+params,assign:url=>{assigned=url}},URL,URLSearchParams,Intl,Math,Number,console};
   vm.createContext(context);vm.runInContext(source,context);assert.equal(rendered.currency,code);assert.equal(rendered.amount,18.37*32);
   const target=lang==='zh-Hant'?'en':'zh-Hant';get('#language').value=target;get('#language').listeners.change();
   const url=new URL(assigned);assert.equal(url.pathname,languagePath(target));assert.equal(url.searchParams.get('currency'),languageCurrency(target));assert.equal(url.searchParams.get('rate'),languageCurrency(target)===code?'18.37':String(MARKETS[languageCurrency(target)].rate));assert.equal(url.searchParams.get('period'),'weekly');assert.equal(url.searchParams.get('hours'),'32');
   get('#currency').value='JPY';get('#currency').listeners.input();assert.equal(get('#hourly').value,code==='JPY'?'18.37':'1500');
   get('#hourly').value='1800';get('#currency').value='USD';get('#currency').listeners.input();get('#currency').value='JPY';get('#currency').listeners.input();assert.equal(get('#hourly').value,'1800');
  }
+});
+
+test('browser region picks a local currency only for the matching page language',()=>{
+ assert.equal(regionalCurrency('zh-Hant',['zh-TW','en-US']),'TWD');
+ assert.equal(regionalCurrency('zh-Hant',['zh-HK']),'HKD');
+ assert.equal(regionalCurrency('zh-Hant',['zh-Hant-TW']),'TWD');
+ assert.equal(regionalCurrency('zh-Hant',['zh-CN']),null);
+ assert.equal(regionalCurrency('es',['es-MX']),'MXN');
+ assert.equal(regionalCurrency('es',['es-AR']),null);
+ assert.equal(regionalCurrency('es',['en-US','es-MX']),'MXN');
+ assert.equal(regionalCurrency('pt',['pt-BR']),'BRL');
+ assert.equal(regionalCurrency('pt',['pt-PT']),'EUR');
+ assert.equal(regionalCurrency('fr',['fr-CA']),'CAD');
+ assert.equal(regionalCurrency('ja',['ja-JP']),null);
+ assert.equal(regionalCurrency('fr',['en-CA']),null);
+ for(const code of ['TWD','MXN','BRL'])assert(MARKETS[code]&&CURRENCIES[code],code);
+ assert.equal(languageCurrency('pt'),'BRL');
+ assert.equal(splitCash(18.37*40,'TWD').reduce((s,g)=>s+g.cents*g.count,0),735);
+ assert(ZERO_DECIMAL.includes('TWD'));
 });
