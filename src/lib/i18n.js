@@ -87,7 +87,7 @@ export const MESSAGES = {
   },
   "zh": {
     "title": "时薪换算年薪计算器：时薪、月薪、年薪一键换算",
-    "description": "时薪30元、每周40小时，税前年薪约62,400元、月薪5,200元。输入时薪和工时，立即算出年薪、月薪、周薪和日薪。免费、无需注册，手机即可用。",
+    "description": "时薪30元、每周40小时，税前年薪约62,400元、月薪5,200元。输入时薪立即算出年薪、月薪、周薪和日薪，还能把收入变成真实纸币和硬币，一键生成分享图。免费、无需注册。",
     "calculator": "计算器",
     "guide": "计算方法",
     "faq": "常见问题",
@@ -172,7 +172,7 @@ export const MESSAGES = {
   },
   "zh-Hant": {
       "title": "時薪換算月薪及年薪計算器｜香港、澳門時薪計算",
-      "description": "輸入時薪與工作時間，即時計算稅前年薪、月薪、週薪及日薪。支援港幣 HKD 與澳門幣 MOP，免費使用，毋須註冊。",
+      "description": "時薪80港元、每週40小時，稅前年薪約166,400港元、月薪約13,867港元。即時換算年薪、月薪、週薪及日薪，以真實紙幣和硬幣顯示收入，一鍵生成分享圖。支援港幣及澳門幣，免費毋須註冊。",
       "calculator": "計算器",
       "guide": "計算方法",
       "faq": "常見問題",
@@ -257,7 +257,7 @@ export const MESSAGES = {
   },
   "ja": {
     "title": "時給→年収計算｜時給1,500円なら年収いくら？月収・週収も自動計算",
-    "description": "時給1,500円・週40時間なら年収312万円、月収26万円（税引前）。時給と労働時間を入れるだけで年収・月収・週収・日収をすぐ計算。無料・登録不要、スマホでも使えます。",
+    "description": "時給1,500円・週40時間なら年収312万円、月収26万円（税引前）。年収・月収・週収・日収をすぐ計算し、本物のお札と硬貨で収入を表示。結果は画像でシェアできます。無料・登録不要。",
     "calculator": "計算機",
     "guide": "使い方",
     "faq": "よくある質問",
@@ -342,7 +342,7 @@ export const MESSAGES = {
   },
   "de": {
     "title": "Stundenlohn in Monats- und Jahresgehalt umrechnen – Brutto-Rechner",
-    "description": "20 € pro Stunde bei 40 Std./Woche sind 3.467 € brutto im Monat und 41.600 € im Jahr. Stundenlohn und Wochenstunden eingeben, Ergebnis sofort sehen. Kostenlos, ohne Anmeldung.",
+    "description": "20 € pro Stunde bei 40 Std./Woche = 41.600 € brutto im Jahr, 3.467 € im Monat. Auch in CHF. Lohn als echte Scheine und Münzen sehen, als Bild teilen. Kostenlos.",
     "calculator": "Rechner",
     "guide": "So funktioniert’s",
     "faq": "Häufige Fragen",
@@ -427,7 +427,7 @@ export const MESSAGES = {
   },
   "fr": {
     "title": "Taux horaire en salaire mensuel et annuel : calcul brut gratuit",
-    "description": "20 € de l’heure à 35 h par semaine, c’est environ 3 033 € brut par mois et 36 400 € par an. Calculez le vôtre instantanément, gratuitement et sans inscription.",
+    "description": "Taux horaire en salaire brut annuel et mensuel, en €, $ CA ou CHF. 20 €/h à 35 h = 36 400 € par an. Vos gains en vrais billets, partage en image. Gratuit.",
     "calculator": "Calculateur",
     "guide": "Mode d’emploi",
     "faq": "Questions fréquentes",
@@ -512,7 +512,7 @@ export const MESSAGES = {
   },
   "es": {
     "title": "Calculadora de salario por hora a anual y mensual (bruto)",
-    "description": "20 € la hora a 40 horas semanales son 41.600 € brutos al año y 3.467 € al mes. Introduce tu salario por hora y tus horas para calcularlo al instante. Gratis y sin registro.",
+    "description": "Salario por hora a sueldo bruto anual y mensual, en cualquier moneda: 20 por hora a 40 h semanales = 41.600 al año. Míralo en billetes reales y compártelo. Gratis.",
     "calculator": "Calculadora",
     "guide": "Cómo funciona",
     "faq": "Preguntas frecuentes",
