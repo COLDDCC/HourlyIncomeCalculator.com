@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { SALARIES, salarySlug, HOURLY_RATES } from '../src/lib/salary-pages.js';
-const paths=['/us-federal-take-home-pay-calculator/','/average-hourly-wage-by-country/','/zh/average-hourly-wage-by-country/','/zh/','/ja/','/de/','/fr/','/es/','/','/salary-to-hourly-calculator/',...HOURLY_RATES.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`),...SALARIES.map(salary=>`/${salarySlug(salary)}/`)];
+import { SALARIES, salarySlug, HOURLY_RATES, FEATURED_RATES } from '../src/lib/salary-pages.js';
+const paths=['/us-federal-take-home-pay-calculator/','/average-hourly-wage-by-country/','/zh/average-hourly-wage-by-country/','/zh/','/zh-Hant/','/ja/','/de/','/fr/','/es/','/','/salary-to-hourly-calculator/',...HOURLY_RATES.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`),...SALARIES.map(salary=>`/${salarySlug(salary)}/`)];
 const sitemap=readFileSync('dist/sitemap.xml','utf8');
 const hourlySource=readFileSync('src/pages/[slug].astro','utf8');
 let failures=0;
@@ -12,9 +12,14 @@ for(const path of paths){
  const html=readFileSync(file,'utf8');
  check(html.includes('<title>')&&html.includes('name="description"'),'metadata',path);
  check(html.includes(canonical),'canonical',path);
- check(sitemap.includes(canonical),'sitemap entry',path);
- if(['/','/zh/','/ja/','/de/','/fr/','/es/'].includes(path)){
+ const rate=path.endsWith('-an-hour-is-how-much-a-year/')?Number(path.split('-')[0].slice(1)):null;
+ const indexable=rate===null||FEATURED_RATES.includes(rate);
+ const noindex=html.includes('<meta name="robots" content="noindex,follow">');
+ if(indexable){check(sitemap.includes('<loc>'+canonical+'</loc>'),'sitemap entry',path);check(!noindex,'indexable page must not be noindex',path);}
+ else{check(!sitemap.includes('<loc>'+canonical+'</loc>'),'noindex page must not be in sitemap',path);check(noindex,'non-featured rate page noindex',path);}
+ if(['/','/zh/','/zh-Hant/','/ja/','/de/','/fr/','/es/'].includes(path)){
   check((html.match(/<h1[ >]/g)||[]).length===1,'single H1',path);
+  check(/<section class="hero" id="calculator"><h1 class="hero-title">[^<]+<\/h1>/.test(html),'keyword H1 in main hero',path);
   check(html.indexOf('id="monthly"')<html.indexOf('id="cash-visual"'),'pay breakdown first',path);
   check(html.indexOf('class="research-link"')<html.indexOf('id="guide"'),'research link first',path);
  }
