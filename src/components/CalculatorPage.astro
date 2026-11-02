@@ -21,8 +21,8 @@ const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP �
 <meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:url" content={canonical}/>
 <script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:title,inLanguage:lang,applicationCategory:'FinanceApplication',operatingSystem:'Any',url:canonical,offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}})}></script>
 </head><body data-language={lang}>
-<header><div class="header-brand"><BrandLogo href={languagePath(lang)} /><div class="header-intro"><h1 class="header-subtitle">{t('subtitle')}</h1></div></div><nav><a href="#calculator">{t('calculator')}</a><a href="#guide">{t('guide')}</a><a href="#faq">{t('faq')}</a></nav><label class="language-control"><span class="sr-only">{t('language')}</span><select id="language">{Object.entries(LANGUAGES).map(([code,name])=><option value={code} selected={code===lang}>{name}</option>)}</select></label></header>
-<main><section class="hero" id="calculator">
+<header><div class="header-brand"><BrandLogo href={languagePath(lang)} /><div class="header-intro"><p class="header-subtitle">{t('subtitle')}</p></div></div><nav><a href="#calculator">{t('calculator')}</a><a href="#guide">{t('guide')}</a><a href="#faq">{t('faq')}</a></nav><label class="language-control"><span class="sr-only">{t('language')}</span><select id="language">{Object.entries(LANGUAGES).map(([code,name])=><option value={code} selected={code===lang}>{name}</option>)}</select></label></header>
+<main><section class="hero" id="calculator"><h1 class="hero-title">{t('hero')}</h1>
 <div class="calculator"><div class="form-panel">
 <label for="hourly">{t('rate')}</label><div class="rate"><span id="symbol">{({CNY:'¥',USD:'$',GBP:'£',EUR:'€',JPY:'¥',AUD:'A$',CAD:'C$',CHF:'CHF',HKD:'HK$',MOP:'MOP$'})[defaultCurrency]}</span><input id="hourly" type="number" min="0" max="100000000" step=".01" value={defaultRate}/><span class="suffix">{t('perHour')}</span></div>
 <div class="presets">{MARKETS[defaultCurrency].presets.map(rate=><button type="button" data-rate={rate}>{money(rate)}</button>)}</div>
@@ -158,4 +158,10 @@ header{max-width:900px;width:calc(100% - 40px);min-height:46px;padding-top:3px;p
 .form-panel,.result-panel{padding:15px 17px}.form-panel>.panel-top{display:none}.form-panel>label,.two label{margin-bottom:5px}.rate{min-height:54px}.rate input{font-size:30px}.presets{margin-top:8px;margin-bottom:12px;gap:5px}.presets button{min-height:35px}.two{gap:9px;margin-bottom:11px}.two input{min-height:43px;padding-top:7px;padding-bottom:7px}.form-panel>select{min-height:43px;padding-top:7px;padding-bottom:7px}.form-panel .hint{margin-top:6px;font-size:11px}.result-header{margin-bottom:4px}#annual{font-size:clamp(31px,3.1vw,43px);line-height:1.1}.totals{gap:6px;margin:8px 0!important;padding-top:8px}.totals>div{padding:7px 10px}.totals small{font-size:11px}.totals strong{font-size:clamp(15px,1.4vw,19px)}.cash-toolbar{margin-top:5px}.cash-heading{margin:4px 0}.cash-heading strong{font-size:24px}.cash-table{height:100px}.cash-controls{margin-top:5px}.cash-controls button{min-height:30px}.cash-visual{margin-bottom:5px}.result-panel>.hint{margin:4px 0;font-size:10px}.share-actions{margin-top:5px;gap:7px}.share-actions button{min-height:38px}.under{margin:5px auto}.research-link,.guide,footer{max-width:900px}
 @media(max-width:1000px){header{width:calc(100% - 28px)}.hero{padding-inline:14px}}
 @media(max-width:760px){header{width:calc(100% - 20px)}.hero{padding-inline:10px}.calculator{grid-template-columns:1fr}.form-panel,.result-panel{padding:13px}.cash-table{height:90px}}
+/* Keyword H1 back in the main content, kept compact so the calculator still fits the first screen. */
+.hero .hero-title{display:block;font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(22px,2.2vw,30px);line-height:1.15;letter-spacing:-.5px;margin:10px auto 8px;max-width:900px;text-align:center;color:var(--hic-ink);text-shadow:none}
+:lang(zh) .hero .hero-title,:lang(ja) .hero .hero-title{letter-spacing:0}
+@media(max-width:760px){.hero .hero-title{font-size:20px;margin:6px auto 6px}}
+@media(max-width:380px){.hero .hero-title{font-size:18px}}
+.header-intro p.header-subtitle{margin:0}
 </style>
