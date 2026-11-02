@@ -32,7 +32,7 @@ export function createCashView({lang='en'}={}) {
     soundButton.title=next&&!enabled?t('soundUnavailable'):t('soundHint');
     if(enabled)sound.play('shuffle');
   });
-  const format = value => new Intl.NumberFormat(lang, {style:'currency',currency:code,maximumFractionDigits:code==='JPY'?0:2}).format(value);
+  const format = value => new Intl.NumberFormat(lang, {style:'currency',currency:code,maximumFractionDigits:currencyConfig(code).factor===1?0:2}).format(value);
   let groups = [], amountKey = '', arranged = false, layer = 100, nodes = [], activeDrag = null;
   const random = seed => { const n = Math.sin(seed * 78.233 + 12.9898) * 43758.5453; return n - Math.floor(n); };
   const place = (node, x, y, angle) => {

@@ -16,12 +16,17 @@ export const CURRENCIES = {
  AUD:{factor:100,symbol:'A$',notes:[100,50,20,10,5],coins:[2,1,.5,.2,.1,.05]},
  CAD:{factor:100,symbol:'C$',notes:[100,50,20,10,5],coins:[2,1,.5,.25,.1,.05]},
  CHF:{factor:100,symbol:'CHF ',notes:[1000,200,100,50,20,10],coins:[5,2,1,.5,.2,.1,.05]},
+ TWD:{factor:1,symbol:'NT$',notes:[2000,1000,500,200,100],coins:[50,10,5,1]},
+ MXN:{factor:100,symbol:'MX$',notes:[1000,500,200,100,50,20],coins:[10,5,2,1,.5]},
+ BRL:{factor:100,symbol:'R$',notes:[200,100,50,20,10,5,2],coins:[1,.5,.25,.1,.05]},
 };
+// Original illustrations (scripts/generate-currency-illustrations.mjs and the HKD/MOP set) are SVG; photos are WebP.
+const SVG_CURRENCIES=new Set(['HKD','MOP','TWD','MXN','BRL']);
 export function currencyConfig(code='USD'){return CURRENCIES[code]||CURRENCIES.USD;}
 export function denominations(code='USD'){
  const config=currencyConfig(code);
  if(code==='USD')return USD_DENOMINATIONS.map(([cents,label,asset])=>({cents,label,asset,src:'/images/usd-'+asset+'.webp',coin:cents<100,currency:code}));
- return [...config.notes,...config.coins].map(value=>({cents:Math.round(value*config.factor),label:config.symbol+value,asset:code.toLowerCase()+'-'+value,src:'/images/currencies/'+code.toLowerCase()+'-'+value+(code==='HKD'||code==='MOP'?'.svg':'.webp'),coin:config.coins.includes(value),currency:code}));
+ return [...config.notes,...config.coins].map(value=>({cents:Math.round(value*config.factor),label:config.symbol+value,asset:code.toLowerCase()+'-'+value,src:'/images/currencies/'+code.toLowerCase()+'-'+value+(SVG_CURRENCIES.has(code)?'.svg':'.webp'),coin:config.coins.includes(value),currency:code}));
 }
 function fromCounts(counts,code){
  const list=denominations(code).flatMap(denom=>{const count=counts.get(denom.cents)||0;return count?[{...denom,count}]:[];});

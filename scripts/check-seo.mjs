@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { SALARIES, salarySlug, HOURLY_RATES, FEATURED_RATES } from '../src/lib/salary-pages.js';
-const paths=['/us-federal-take-home-pay-calculator/','/average-hourly-wage-by-country/','/zh/average-hourly-wage-by-country/','/zh/','/zh-Hant/','/ja/','/de/','/fr/','/es/','/','/salary-to-hourly-calculator/',...HOURLY_RATES.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`),...SALARIES.map(salary=>`/${salarySlug(salary)}/`)];
+const paths=['/us-federal-take-home-pay-calculator/','/average-hourly-wage-by-country/','/zh/average-hourly-wage-by-country/','/zh/','/zh-Hant/','/ja/','/de/','/fr/','/es/','/pt/','/','/salary-to-hourly-calculator/',...HOURLY_RATES.map(rate=>`/${rate}-an-hour-is-how-much-a-year/`),...SALARIES.map(salary=>`/${salarySlug(salary)}/`)];
 const sitemap=readFileSync('dist/sitemap.xml','utf8');
 const hourlySource=readFileSync('src/pages/[slug].astro','utf8');
 let failures=0;
@@ -17,7 +17,7 @@ for(const path of paths){
  const noindex=html.includes('<meta name="robots" content="noindex,follow">');
  if(indexable){check(sitemap.includes('<loc>'+canonical+'</loc>'),'sitemap entry',path);check(!noindex,'indexable page must not be noindex',path);}
  else{check(!sitemap.includes('<loc>'+canonical+'</loc>'),'noindex page must not be in sitemap',path);check(noindex,'non-featured rate page noindex',path);}
- if(['/','/zh/','/zh-Hant/','/ja/','/de/','/fr/','/es/'].includes(path)){
+ if(['/','/zh/','/zh-Hant/','/ja/','/de/','/fr/','/es/','/pt/'].includes(path)){
   check((html.match(/<h1[ >]/g)||[]).length===1,'single H1',path);
   check(/<section class="hero" id="calculator"><h1 class="hero-title">[^<]+<\/h1>/.test(html),'keyword H1 in main hero',path);
   check(html.indexOf('id="monthly"')<html.indexOf('id="cash-visual"'),'pay breakdown first',path);

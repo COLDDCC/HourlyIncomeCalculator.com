@@ -1,5 +1,5 @@
 ---
-import { MARKETS, languageCurrency } from '../lib/market.js';
+import { MARKETS, languageCurrency, ZERO_DECIMAL } from '../lib/market.js';
 import BrandLogo from './BrandLogo.astro';
 import { FEATURED_RATES } from '../lib/salary-pages.js';
 import { LANGUAGES, languagePath, translator } from '../lib/i18n.js';
@@ -9,9 +9,9 @@ const title=t('title'),description=t('description');
 const defaultCurrency=languageCurrency(lang);
 const defaultRate=MARKETS[defaultCurrency].rate;
 const locale=lang==='zh-Hant'?'zh-Hant-HK':lang;
-const money=n=>new Intl.NumberFormat(locale,{style:'currency',currency:defaultCurrency,maximumFractionDigits:defaultCurrency==='JPY'?0:2}).format(n);
+const money=n=>new Intl.NumberFormat(locale,{style:'currency',currency:defaultCurrency,maximumFractionDigits:ZERO_DECIMAL.includes(defaultCurrency)?0:2}).format(n);
 const canonical='https://hourlyincomecalculator.com'+languagePath(lang);
-const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP — Pound Sterling',EUR:'EUR — Euro',JPY:'JPY — 日本円',AUD:'AUD — Australian Dollar',CAD:'CAD — Canadian Dollar',CHF:'CHF — Swiss Franc',HKD:'HKD — 港幣',MOP:'MOP — 澳門幣'};
+const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP — Pound Sterling',EUR:'EUR — Euro',JPY:'JPY — 日本円',AUD:'AUD — Australian Dollar',CAD:'CAD — Canadian Dollar',CHF:'CHF — Swiss Franc',HKD:'HKD — 港幣',MOP:'MOP — 澳門幣',TWD:'TWD — 新臺幣',MXN:'MXN — Peso mexicano',BRL:'BRL — Real brasileiro'};
 ---
 <!doctype html><html lang={lang==='zh'?'zh-Hans':lang}><head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#f5c928"/>
@@ -24,7 +24,7 @@ const currencyNames={CNY:'CNY — 人民币',USD:'USD — US Dollar',GBP:'GBP �
 <header><div class="header-brand"><BrandLogo href={languagePath(lang)} /><div class="header-intro"><p class="header-subtitle">{t('subtitle')}</p></div></div><nav><a href="#calculator">{t('calculator')}</a><a href="#guide">{t('guide')}</a><a href="#faq">{t('faq')}</a></nav><label class="language-control"><span class="sr-only">{t('language')}</span><select id="language">{Object.entries(LANGUAGES).map(([code,name])=><option value={code} selected={code===lang}>{name}</option>)}</select></label></header>
 <main><section class="hero" id="calculator"><h1 class="hero-title">{t('hero')}</h1>
 <div class="calculator"><div class="form-panel">
-<label for="hourly">{t('rate')}</label><div class="rate"><span id="symbol">{({CNY:'¥',USD:'$',GBP:'£',EUR:'€',JPY:'¥',AUD:'A$',CAD:'C$',CHF:'CHF',HKD:'HK$',MOP:'MOP$'})[defaultCurrency]}</span><input id="hourly" type="number" min="0" max="100000000" step=".01" value={defaultRate}/><span class="suffix">{t('perHour')}</span></div>
+<label for="hourly">{t('rate')}</label><div class="rate"><span id="symbol">{({CNY:'¥',USD:'$',GBP:'£',EUR:'€',JPY:'¥',AUD:'A$',CAD:'C$',CHF:'CHF',HKD:'HK$',MOP:'MOP$',TWD:'NT$',MXN:'MX$',BRL:'R$'})[defaultCurrency]}</span><input id="hourly" type="number" min="0" max="100000000" step=".01" value={defaultRate}/><span class="suffix">{t('perHour')}</span></div>
 <div class="presets">{MARKETS[defaultCurrency].presets.map(rate=><button type="button" data-rate={rate}>{money(rate)}</button>)}</div>
 <div class="two"><label>{t('hours')}<input id="hours" type="number" min="0" max="168" value="40"/></label><label>{t('weeks')}<input id="weeks" type="number" min="0" max="52" value="52"/></label></div>
 <label for="currency">{t('currency')}</label><select id="currency">{Object.entries(currencyNames).map(([code,name])=><option value={code} selected={code===defaultCurrency}>{code+' — '+new Intl.DisplayNames([locale],{type:'currency'}).of(code)}</option>)}</select><p class="hint">{t('currencyHint')}</p></div>
